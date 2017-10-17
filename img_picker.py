@@ -37,7 +37,7 @@ def task_callback(result):
 
 
     folder, image_file, density = result
-    id_matcher = re.compile("TCGA-\w{2}-\w{4}")
+    id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
     id = id_matcher.search(image_file).group()
     
     if id in patients:
@@ -65,39 +65,49 @@ def task_callback(result):
 
 patients = {}
 start_time = 0
-def main(folder, target_folder, task_pool = 20):
-    global task_count, task_sum, patients, start_time
+def main(folder, target_folder, task_pool = 20, tmpfilename = "image_metas.pkl"):
+
+    if not os.path.isfile(tmpfilename):
+        print "image density not exists, calculating"
+        global task_count, task_sum, patients, start_time
     
-    patients = {}
+        patients = {}
 
-    task_sum = len(os.listdir(folder))
+        task_sum = len(os.listdir(folder))
 
-    task_count = 0
-    pool = Pool(task_pool)
-    #i = 0
-    start_time = time.time()
-    for image_file in os.listdir(folder):
-        #i = i + 1
-        #if i==10:
-        #    break
-        #calc_task(os.path.join(folder, image_file))
-        pool.apply_async(calc_task, (folder, image_file, ),
+        task_count = 0
+        pool = Pool(task_pool)
+        #i = 0
+        start_time = time.time()
+        for image_file in os.listdir(folder):
+            #i = i + 1
+            #if i==10:
+            #    break
+            #calc_task(os.path.join(folder, image_file))
+            pool.apply_async(calc_task, (folder, image_file, ),
                          callback=task_callback)
-    pool.close()
-    pool.join()
+        pool.close()
+        pool.join()
         
 
-    with open("image_matas.pkl", "wb") as output:
-        pickle.dump(patients, output)
+        with open(tmpfilename, "wb") as output:
+            pickle.dump(patients, output)
+    else:
+        print "using existing density file: %s" % tmpfilename
+        patients = pickle.load(open(tmpfilename, "rb"))
+        
     print "start copy file"
+
 
     for id in patients:
         if not os.path.exists(os.path.join(target_folder, id)):
             os.mkdir(os.path.join(target_folder, id))
         for key, value in sorted(patients[id].iteritems(),
-                                 key=lambda (k,v): (v,k))[-10:]:
+                                 key=lambda (k,v): (v,k))[-20:]:
             shutil.copyfile(os.path.join(folder, key),
                             os.path.join(target_folder, id, key))
+
+    print "copy finished"
 
 if __name__ == "__main__":
     main("/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-processed",
