@@ -6,7 +6,7 @@ lines=`cat $file | wc -l`
 echo $lines
 
 batch=`expr $lines / 20`
-
+#batch=10
 
 for i in {0..19}
 #i=0
