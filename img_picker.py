@@ -1,3 +1,13 @@
+'''
+This script picks the top 20 best histology image from the input
+directory to the output directory according to the image pixel 
+density. This is the preprocess of the massive images.
+
+This script use parallel couputing, task pool it set to 20 by 
+default. Change it according to your machine configuration.
+'''
+
+
 from PIL import Image
 import os
 import shutil
