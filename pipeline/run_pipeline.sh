@@ -6,8 +6,18 @@ lines=`ls $folder | wc -l`
 echo $lines
 
 batch=`expr $lines / 20`
-#batch=10
+
 echo $batch
+
+for i in {0..19}
+do
+    echo "deleting old outputs"
+    rm -rf outputs_pipeline$i
+    mkdir outputs_pipeline$i
+    
+    echo "regenerating file list $i"
+    cellprofiler -p check_cells.cpproj -i $folder -o outputs_pipeline$i
+done
 
 for i in {0..19}
 #i=0
@@ -21,14 +31,8 @@ do
     if [ $i = 19 ]; then
 	end=$lines
     fi
-
-    echo "deleting old outputs"
-    rm -rf outputs_pipeline$i
-    mkdir outputs_pipeline$i
     
-    echo "regenerating file list $i"
-    cellprofiler -p check_cells.cpproj -i $folder -o outputs_pipeline$i
     echo "starting task$i"
-
     cellprofiler -p outputs_pipeline$i/Batch_data.h5 -cr -f $start -l $end > outputs_pipeline$i/log.log 2>&1 &
 done
+
