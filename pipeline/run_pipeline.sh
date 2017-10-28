@@ -16,7 +16,7 @@ do
     mkdir outputs_pipeline$i
     
     echo "regenerating file list $i"
-    cellprofiler -p check_cells.cpproj -i $folder -o outputs_pipeline$i
+    cellprofiler -p pipeline.cpproj -i $folder -o outputs_pipeline$i
 done
 
 for i in {0..19}
