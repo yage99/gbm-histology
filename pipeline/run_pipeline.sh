@@ -7,6 +7,7 @@ echo $lines
 
 batch=`expr $lines / 20`
 #batch=10
+echo $batch
 
 for i in {0..19}
 #i=0
@@ -15,6 +16,7 @@ do
     if [ $start = 0 ]; then
 	start=1
     fi
+
     let end=($i+1)*$batch
     if [ $i = 19 ]; then
 	end=$lines
