@@ -30,4 +30,4 @@ do
 
     cellprofiler -p outputs$i/Batch_data.h5 -cr -f $start -l $end > outputs$i/log.log 2>&1 &
 done
-    
+

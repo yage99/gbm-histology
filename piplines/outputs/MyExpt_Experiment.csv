@@ -1,0 +1,273 @@
+Key,Value
+CellProfiler_Version,3.0.0rc4
+ChannelType_source,Color
+Default_InputFolder,.
+Default_OutputFolder,./outputs
+ImageSet_Zip_Dictionary,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48T01FIHhtbG5zPSJodHRwOi8vd3d3Lm9wZW5taWNyb3Njb3B5Lm9yZy9TY2hlbWFzL09NRS8yMDE2LTA2Ij48SW1hZ2UgSUQ9InNvdXJjZSI+PFBpeGVscyBEaW1lbnNpb25PcmRlcj0iWFlDWlQiIElEPSJQaXhlbHM6c291cmNlIiBTaXplQz0iMSIgU2l6ZVQ9IjEiIFNpemVYPSIxIiBTaXplWT0iMSI+PFRpZmZEYXRhIEZpcnN0Qz0iMCIgRmlyc3RUPSIwIiBGaXJzdFo9IjAiIElGRD0iMCIgUGxhbmVDb3VudD0iMSI+PFVVSUQgRmlsZU5hbWU9ImZpbGU6L21lZGlhL2FmMjE0ZGJlLWI2ZmEtNGY1ZS05MzJhLTE0YjEzM2JhNDc2Ni96aGFuZ3lhL3N2cy1zZWxlY3RlZC9UQ0dBLTAyLTAwMDEtMDFDLTAxLUJTMS9UQ0dBLTAyLTAwMDEtQy0wMS1CUzFfPjxhdGUgVGhlQz0iMCIgVGhlVD0iMCJaPSIwaW5vOi8vY3JvZXJnaW1hdG5ub3RhdGlvbi8yMDE0LTRDaGFubmVsLy0yIi8+PC9lPjwvUHhzPjwvdUxvbmdBbm5vdGF0aW9uIElEPSJpbmZvOi8vY2VsbHByb2ZpbGVyLm9yZy9pbWFnZXNldC9hbm5vdGF0aW9uLzIwMTQtMDQtMTcvQ2hhbm5lbC8tMiJlc2NyaGFubkRlc2NyaXB0aW9uPlZhbHVlPjxlPjwvdGlvbj48U3RydWN0dXJlZEFubm90YXRpb25zPjxPPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48T01FIHhtbG5zPSJodHRwOi8vd3d3Lm9wZW5taWNyb3Njb3B5Lm9yZy9TY2hlbWFzL09NRS8yMDE2LTA2Ij48SW1hZ2UgSUQ9InNvdXJjZSI+PFBpeGVscyBEaW1lbnNpb25PcmRlcj0iWFlDWlQiIElEPSJQaXhlbHM6c291cmNlIiBTaXplQz0iMSIgU2l6ZVQ9IjEiIFNpemVYPSIxIiBTaXplWT0iMSI+PFRpZmZEYXRhIEZpcnN0Qz0iMCIgRmlyc3RUPSIwIiBGaXJzdFo9IjAiIElGRD0iMCIgUGxhbmVDb3VudD0iMSI+PFVVSUQgRmlsZU5hbWU9ImZpbGU6L21lZGlhL2FmMjE0ZGJlLWI2ZmEtNGY1ZS05MzJhLTE0YjEzM2JhNDc2Ni96aGFuZ3lhL3N2cy1zZWxlY3RlZC9UQ0dBLTA2LTAxODctMDFBLTAxLVRTMS9UQ0dBLTYtMDE3LTAxQS0wMS1UUzFfMDA8P3htbCB2ZXJzaW9uPSIxLjAiIGVuY29kaW5nPSJVVEYtOCI/PjxPTUUgeG1sbnM9Imh0dHA6Ly93d3cub3Blbm1pY3Jvc2NvcHkub3JnL1NjaGVtYXMvT01FLzIwMTYtMDYiPjxJbWFnZSBJRD0ic291cmNlIj48UGl4ZWxzIERpbWVuc2lvbk9yZGVyPSJYWUNaVCIgSUQ9IlBpeGVsczpzb3VyY2UiIFNpemVDPSIxIiBTaXplVD0iMSIgU2l6ZVg9IjEiIFNpemVZPSIxIj48VGlmZkRhdGEgRmlyc3RDPSIwIiBGaXJzdFQ9IjAiIEZpcnN0Wj0iMCIgSUZEPSIwIiBQbGFuZUNvdW50PSIxIj48VVVJRCBGaWxlTmFtZT0iZmlsZTovbWVkaWEvYWYyMTRkYmUtYjZmYS00ZjVlLTkzMmEtMTRiMTMzYmE0NzY2L3poYW5neWEvc3ZzLXNlbGVjdGVkL1RDR0EtMTItMDYxNi0wMUEtMDEtVFMxL1RDR0EtMS0xNi0wQS0wMXhtbHZyc2lvbi4wImVuY29uZ0Y4P09NRW5zcDovd3cub3BzY3kub3JnL1NtL09NRS0wNiI+PEltYWdlIEl1cmNlPjxQaXhlbHMgVCIgSUQ9InNvdXJjZSIgU2l6ZUM9IjEiIFNpemVYPSIxInpZPSIxIj48VGlmZkRhdGEgRmlyc3RDPSIwIiBGaXJzdFQ9IjAiIFo9IjAiRD0iYW5lb3U9IjFVSUQgRmlOYW1lPSJmaWxlOmRpYS9hZmUtM2EtYmhhbnNlY3RlZC9UQ0dBLTE5LTI2MjktMDFBLTAxLUJTMS9UQTk5LTAxQS0wMS1T
+Metadata_GroupingTags,"[""Metadata_ID""]"
+Path_Mappings,"{""CaseSensitive"": true, ""PathMappings"": [[""/Users/zhangya/Documents/GBM/images"", ""/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-selected/""]], ""LocalSeparator"": ""/"", ""Url2PathnamePackageName"": ""urllib""}"
+Pipeline_Pipeline,"CellProfiler Pipeline: http://www.cellprofiler.org
+Version:3
+DateRevision:300
+GitHash:
+ModuleCount:8
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp ""\x5B\\\\\\\\\\\\\\\\/\x5D\\\\\\\\."")
+
+Metadata:[module_num:2|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\'The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<ID>TCGA-\\\\w{2}-\\\\w{4}).*\\\\.png$
+    Regular expression to extract from folder name:(?P<Date>\x5B0-9\x5D{4}_\x5B0-9\x5D{2}_\x5B0-9\x5D{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain """")
+    Metadata file location:
+    Match file and image metadata:\x5B\x5D
+    Use case insensitive matching?:No
+
+NamesAndTypes:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:8|show_window:False|notes:\x5B\'The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:All images
+    Select the image type:Color image
+    Name to assign these images:source
+    Match metadata:\x5B\x5D
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:1
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D:No
+    x:1.0
+    y:1.0
+    z:1.0
+    Select the rule criteria:and (file does contain """")
+    Name to assign these images:DNA
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:Yes
+    grouping metadata count:1
+    Metadata category:ID
+
+UnmixColors:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Stain count:1
+    Select the input color image:source
+    Name the output image:Hematoxylin
+    Stain:Hematoxylin
+    Red absorbance:0.379264
+    Green absorbance:0.821814
+    Blue absorbance:0.425183
+
+IdentifyPrimaryObjects:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Hematoxylin
+    Name the primary objects to be identified:nulei
+    Typical diameter of objects, in pixel units (Min,Max):10,80
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:10
+    Threshold strategy:Global
+    Thresholding method:Manual
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.8
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Background
+    Size of adaptive window:200
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+ExportToSpreadsheet:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:12|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma ("","")
+    Add image metadata columns to your object data file?:No
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Elsewhere...\x7C./outputs
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:Image\x7CCount_nulei,Image\x7CFileName_source,Image\x7CMetadata_ID
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:Yes
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
+
+CreateBatchFiles:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:8|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Store batch files in default output folder?:Yes
+    Output folder path:outputs0
+    Are the cluster computers running Windows?:No
+    Hidden\x3A in batch mode:Yes
+    Hidden\x3A in distributed mode:No
+    Hidden\x3A default input folder at time of save:/home/zhangya
+    Hidden\x3A revision number:300
+    Hidden\x3A from old matlab:No
+    Local root path:/Users/zhangya/Documents/GBM/images
+    Cluster root path:/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-selected/
+"
+Pipeline_UserPipeline,"CellProfiler Pipeline: http://www.cellprofiler.org
+Version:3
+DateRevision:300
+GitHash:
+ModuleCount:8
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp ""\x5B\\\\\\\\\\\\\\\\/\x5D\\\\\\\\."")
+
+Metadata:[module_num:2|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\'The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:Yes
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<ID>TCGA-\\\\w{2}-\\\\w{4}).*\\\\.png$
+    Regular expression to extract from folder name:(?P<Date>\x5B0-9\x5D{4}_\x5B0-9\x5D{2}_\x5B0-9\x5D{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain """")
+    Metadata file location:
+    Match file and image metadata:\x5B\x5D
+    Use case insensitive matching?:No
+
+NamesAndTypes:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:8|show_window:False|notes:\x5B\'The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:All images
+    Select the image type:Color image
+    Name to assign these images:source
+    Match metadata:\x5B\x5D
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:1
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D:No
+    x:1.0
+    y:1.0
+    z:1.0
+    Select the rule criteria:and (file does contain """")
+    Name to assign these images:DNA
+    Name to assign these objects:Cell
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:Yes
+    grouping metadata count:1
+    Metadata category:ID
+
+UnmixColors:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Stain count:1
+    Select the input color image:source
+    Name the output image:Hematoxylin
+    Stain:Hematoxylin
+    Red absorbance:0.379264
+    Green absorbance:0.821814
+    Blue absorbance:0.425183
+
+IdentifyPrimaryObjects:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Hematoxylin
+    Name the primary objects to be identified:nulei
+    Typical diameter of objects, in pixel units (Min,Max):10,80
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:10
+    Threshold strategy:Global
+    Thresholding method:Manual
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.8
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Background
+    Size of adaptive window:200
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+ExportToSpreadsheet:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:12|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma ("","")
+    Add image metadata columns to your object data file?:No
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Elsewhere...\x7C./outputs
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:Image\x7CCount_nulei,Image\x7CFileName_source,Image\x7CMetadata_ID
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:MyExpt_
+    Overwrite existing files without warning?:Yes
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
+
+CreateBatchFiles:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:8|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Store batch files in default output folder?:Yes
+    Output folder path:/Users/zhangya/Downloads/ExampleHumanImages
+    Are the cluster computers running Windows?:No
+    Hidden\x3A in batch mode:No
+    Hidden\x3A in distributed mode:No
+    Hidden\x3A default input folder at time of save:/Users/zhangya/Downloads/ExampleHumanImages
+    Hidden\x3A revision number:0
+    Hidden\x3A from old matlab:No
+    Local root path:/Users/zhangya/Documents/GBM/images
+    Cluster root path:/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-selected/
+"
+Run_Timestamp,2017-10-27T19:27:51.723788
