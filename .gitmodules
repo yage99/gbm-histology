@@ -1,0 +1,3 @@
+[submodule "TCGAMaxim"]
+	path = TCGAMaxim
+	url = git@github.com:yage99/TCGAMaxim.git
