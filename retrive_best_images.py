@@ -9,7 +9,9 @@ import os
 import shutil
 import re
 
+id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
 def main(filename):
+    global id_matcher
     with open(filename, "r") as f:
         reader = csv.reader(f, delimiter=',')
 
@@ -22,7 +24,7 @@ def main(filename):
             
             number_of_nuclei = float(metas[0])
             image_name = metas[1]
-            id = metas[3]
+            id = id_matcher.search(metas[1]).group()
 
             if id not in all_infos:
                 all_infos[id] = {}
@@ -32,9 +34,11 @@ def main(filename):
             
 
 if __name__ == "__main__":
-    id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
-    all_infos = main("./pipelines/all.csv")
 
+    all_infos = main("./check_cells/all.csv")
+
+    i = 0
+    all = len(all_infos) * 10
     for id in all_infos:
         for key, value in sorted(all_infos[id].iteritems(),
                                  key=lambda (k, v): (v, k) )[-10:]:

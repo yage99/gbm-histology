@@ -34,34 +34,45 @@ def main(dirname, outputname):
 
                 for row in features:
                     if row[0] in all_data_matrix:
-                        numpy.append(all_data_matrix[row[0]],
-                                     numpy.array([row[1:]]).astype(numpy.float),
-                                     axis=0)
+                        all_data_matrix[row[0]] = numpy.append(
+                            all_data_matrix[row[0]],
+                            numpy.array([row[1:]]).astype(numpy.float),
+                            axis=0)
 
-                        #if all_data_matrix[row[0]].shape[0] == 10:
-                            
+                        # this will reduce memory use
+                        if all_data_matrix[row[0]].shape[0] == 10:
+                            matrix = all_data_matrix[row[0]]
+                            mean = numpy.mean(matrix, axis=0).tolist()
+                            std = numpy.std(matrix, axis=0).tolist()
+                            mean.extend(std)
+                            mean.inset(0, row[0])
+                            writer.writerow(mean)
+                            del all_data_matrix[row[0]]
 
                     else:
-                        all_data_matrix[row[0]] = numpy.array([row[1:]]).astype(numpy.float)
+                        all_data_matrix[row[0]] = numpy.array(
+                            [row[1:]]).astype(numpy.float)
                         #print(matrix)
 
-        all = len(all_data_matrix)
-        i = 0
-        for id in all_data_matrix:
-            i = i + 1
-            printProgressBar(i, all, prefix=id, length=40)
-            matrix = all_data_matrix[id]
-            if(len(matrix) < 10 ):
-                print("warn: %s not enough lines" % id)
+            all = len(all_data_matrix)
+            i = 0
+            for id in all_data_matrix:
+                i = i + 1
+                printProgressBar(i, all,
+                                 prefix=("%s(%d/%d)" % (id, i, all)),
+                                 length=40)
+                matrix = all_data_matrix[id]
+                if(len(matrix) < 10 ):
+                    print("warn: %s not enough lines" % id)
                         
-            numpy_matrix = matrix#numpy.array(matrix).astype(numpy.float)
-            mean = numpy.mean(numpy_matrix, axis=0)
-            std = numpy.std(numpy_matrix, axis=0)
-            mean_list = mean.tolist()
-            std_list = std.tolist()
-            mean_list.extend(std_list)
-            mean_list.insert(0, id)
-            writer.writerow(mean_list)
+                numpy_matrix = matrix#numpy.array(matrix).astype(numpy.float)
+                mean = numpy.mean(numpy_matrix, axis=0)
+                std = numpy.std(numpy_matrix, axis=0)
+                mean_list = mean.tolist()
+                std_list = std.tolist()
+                mean_list.extend(std_list)
+                mean_list.insert(0, id)
+                writer.writerow(mean_list)
 
 
 
