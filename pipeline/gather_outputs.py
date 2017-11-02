@@ -45,7 +45,7 @@ def main(dirname, outputname):
                             mean = numpy.mean(matrix, axis=0).tolist()
                             std = numpy.std(matrix, axis=0).tolist()
                             mean.extend(std)
-                            mean.inset(0, row[0])
+                            mean.insert(0, row[0])
                             writer.writerow(mean)
                             del all_data_matrix[row[0]]
 
@@ -63,7 +63,7 @@ def main(dirname, outputname):
                                  length=40)
                 matrix = all_data_matrix[id]
                 if(len(matrix) < 10 ):
-                    print("warn: %s not enough lines" % id)
+                    print("warn: %s not enough lines(%d)" % (id, len(matrix)))
                         
                 numpy_matrix = matrix#numpy.array(matrix).astype(numpy.float)
                 mean = numpy.mean(numpy_matrix, axis=0)

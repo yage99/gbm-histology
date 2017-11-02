@@ -19,11 +19,18 @@ import time
 def calc_density(image, threshold = 150):
     pixel = image.load();
 
-    pixel_count = image.size[0] * image.size[1] * 3
-
+    pixel_count = 0#image.size[0] * image.size[1] * 3
     color_count = 0
     for i in range(image.size[0]):
         for j in range(image.size[1]):
+            # transparent pixel don't count
+            if pixel[i,j][3] < 125:
+                continue
+            # black pixel don't count
+            if pixel[i,j][0] + pixel[i,j][1] + pixel[i,j][2] < 50:
+                continue
+            
+            pixel_count = pixel_count + 1
             if pixel[i,j][0] < threshold:
                 color_count = color_count + 1
             if pixel[i,j][1] < threshold:
