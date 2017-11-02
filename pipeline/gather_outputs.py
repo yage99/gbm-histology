@@ -12,7 +12,7 @@ import numpy
 sys.path.append("../")
 from TCGAMaxim.utils import printProgressBar
 
-id_matcher = re.compile("TCGA-\w{2}-\w{4}")
+id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
 def main(dirname, outputname):
     for gathername, sourcename in [("cell.csv", "MyExpt_cell.csv"),
                                    ("cytoplasm.csv", "MyExpt_Cytoplasm.csv"),
@@ -64,7 +64,7 @@ def main(dirname, outputname):
                 matrix = all_data_matrix[id]
                 if(len(matrix) < 10 ):
                     print("warn: %s not enough lines(%d)" % (id, len(matrix)))
-                        
+
                 numpy_matrix = matrix#numpy.array(matrix).astype(numpy.float)
                 mean = numpy.mean(numpy_matrix, axis=0)
                 std = numpy.std(numpy_matrix, axis=0)
