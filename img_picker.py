@@ -15,6 +15,7 @@ from TCGAMaxim.utils import printProgressBar
 import pickle
 from multiprocessing import Pool
 import time
+import sys
 
 def calc_density(image, threshold = 150):
     pixel = image.load();
@@ -82,7 +83,7 @@ def task_callback(result):
 patients = {}
 start_time = 0
 def main(folder, target_folder, task_pool = 20, tmpfilename = "image_metas.pkl"):
-
+    print("data file name: %s" % tmpfilename)
     if not os.path.isfile(tmpfilename):
         print "image density not exists, calculating"
         global task_count, task_sum, patients, start_time
@@ -114,7 +115,6 @@ def main(folder, target_folder, task_pool = 20, tmpfilename = "image_metas.pkl")
         
     print "start copy file"
 
-
     copy_all_count = len(patients) * 20
     copy_count = 0
     for id in patients:
@@ -130,5 +130,10 @@ def main(folder, target_folder, task_pool = 20, tmpfilename = "image_metas.pkl")
     print "copy finished"
 
 if __name__ == "__main__":
-    main("/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-processed",
-         "/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-selected")
+    if len(sys.argv) > 1:
+        main("/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-processed",
+             "/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-selected",
+             tmpfilename = sys.argv[1])
+    else:
+        main("/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-processed",
+             "/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-selected")
