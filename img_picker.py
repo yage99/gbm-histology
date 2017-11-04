@@ -116,6 +116,8 @@ def main(folder, target_folder, task_pool = 20, tmpfilename = "image_metas.pkl")
     print "start copy file"
 
 
+    copy_all_count = len(patients) * 20
+    copy_count = 0
     for id in patients:
         if not os.path.exists(os.path.join(target_folder, id)):
             os.mkdir(os.path.join(target_folder, id))
@@ -123,6 +125,8 @@ def main(folder, target_folder, task_pool = 20, tmpfilename = "image_metas.pkl")
                                  key=lambda (k,v): (v,k))[-20:]:
             shutil.copyfile(os.path.join(folder, key),
                             os.path.join(target_folder, id, key))
+            copy_count = copy_count + 1
+            printProgressBar(copy_count, copy_all_count, prefix=id, length=30)
 
     print "copy finished"
 
