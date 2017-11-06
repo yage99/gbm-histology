@@ -1,6 +1,9 @@
 #!/bin/bash
 
-file=$1
+folder=/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/svs-selected
+
+file=filelist
+find $folder -name *.png > $file
 
 lines=`cat $file | wc -l`
 echo $lines
@@ -26,6 +29,9 @@ do
     
     echo "regenerating file list $i"
     cellprofiler -p check_cells.cpproj --file-list $file -o outputs$i
+done
+for i in {0..19}
+do
     echo "starting task$i"
 
     cellprofiler -p outputs$i/Batch_data.h5 -cr -f $start -l $end > outputs$i/log.log 2>&1 &
