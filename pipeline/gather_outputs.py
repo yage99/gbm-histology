@@ -40,7 +40,7 @@ def main(dirname, outputname):
                             axis=0)
 
                         # this will reduce memory use
-                        if all_data_matrix[row[0]].shape[0] == 10:
+                        '''if all_data_matrix[row[0]].shape[0] == 10:
                             matrix = all_data_matrix[row[0]]
                             mean = numpy.mean(matrix, axis=0).tolist()
                             std = numpy.std(matrix, axis=0).tolist()
@@ -48,6 +48,7 @@ def main(dirname, outputname):
                             mean.insert(0, row[0])
                             writer.writerow(mean)
                             del all_data_matrix[row[0]]
+                        '''
 
                     else:
                         all_data_matrix[row[0]] = numpy.array(
