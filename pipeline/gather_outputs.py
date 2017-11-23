@@ -43,6 +43,12 @@ def main(dirname, outputname, task_pool=20):
         thread_finished.value = 0
 
         def task_callback(local_all_data):
+            title = local_all_data['title']
+            del local_all_data['title']
+            
+            if "title" not in all_data_matrix:
+                all_data_matrix['title'] = title
+            
             for id in local_all_data:
                 if id in all_data_matrix:
                     all_data_matrix[id] = numpy.append(
@@ -59,7 +65,7 @@ def main(dirname, outputname, task_pool=20):
 
         for filename in cellfiles:
             # file_process_callback(file_processor(filename))
-            pool.apply_async(file_processor, (filename, all_data_matrix, ),
+            pool.apply_async(file_processor, (filename, ),
                              callback=task_callback)
 
         while(thread_finished.value < len(cellfiles)):
@@ -79,6 +85,15 @@ def main(dirname, outputname, task_pool=20):
         with open(gathername, "w") as f:
             print "start writing file %s" % gathername
             writer = csv.writer(f)
+
+            title = all_data_matrix['title']
+            mean_title = map(lambda x: "mean_" + x, title)
+            std_title = map(lambda x: "std_" + x, title)
+            title = mean_title
+            title.extend(std_title)
+            writer.writerow(title)
+            del all_data_matrix['title']
+            
             all = len(all_data_matrix)
             i = 0
             for id in all_data_matrix:
@@ -93,19 +108,21 @@ def main(dirname, outputname, task_pool=20):
 
                 numpy_matrix = matrix
                 # numpy.array(matrix).astype(numpy.float)
-                mean = numpy.mean(numpy_matrix, axis=0)
-                std = numpy.std(numpy_matrix, axis=0)
-                if(numpy.isnan(mean).any()):
-                    print("warn: %s none in line" % id)
-                    print numpy_matrix
-                mean_list = mean.tolist()
-                std_list = std.tolist()
-                mean_list.extend(std_list)
-                mean_list.insert(0, id)
-                writer.writerow(mean_list)
+                mean = []
+                std = []
+                for column_idx in range(numpy_matrix.shape[1]):
+                    column = numpy_matrix[:, column_idx]
+                    column = column[~numpy.isnan(column)]
+                    mean.append(numpy.mean(column))
+                    std.append(numpy.std(column))
+
+                # append std to the end of means
+                mean.extend(std)
+                mean.insert(0, id)
+                writer.writerow(mean)
 
 
-def file_processor(filename, all_data_matrix):
+def file_processor(filename):
     global id_matcher
 
     line_count = 0
@@ -121,14 +138,18 @@ def file_processor(filename, all_data_matrix):
 
     f = open(filename, 'r')
     reader = csv.reader(f, delimiter=',')
-    reader.next()
+    
     local_all_data = {}
+    title = reader.next()
+    title = title[8:]
+    local_all_data['title'] = title
+    
     for line in reader:
 
         id = id_matcher.search(line[2]).group()
 
         numpy_line = numpy.array([line[8:]]).astype(numpy.float)
-        numpy_line[numpy.isnan(numpy_line)] = 0
+        # numpy_line[numpy.isnan(numpy_line)] = 0
 
         if id in local_all_data:
             local_all_data[id] = numpy.append(
