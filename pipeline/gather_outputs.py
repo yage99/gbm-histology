@@ -20,7 +20,7 @@ thread_count = Value('d', 0)
 thread_total = Value('d', 0)
 thread_finished = Value('d', 0)
 
-id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
+id_matcher = re.compile("TCGA-\w{2}-\w{4}")
 
 
 def main(dirname, outputname, task_pool=20):
