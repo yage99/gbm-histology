@@ -91,6 +91,7 @@ def main(dirname, outputname, task_pool=20):
             std_title = map(lambda x: "std_" + x, title)
             title = mean_title
             title.extend(std_title)
+            title.insert(0, 'id')
             writer.writerow(title)
             del all_data_matrix['title']
             
