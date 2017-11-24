@@ -14,6 +14,8 @@ id_matcher = re.compile("TCGA-\w{2}-\w{4}")
 def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
     clinical_reader = csv.reader(open(clinical_file, 'r'), delimiter=',')
     clinical_data = []
+    # bypass header
+    clinical_reader.next()
     for line in clinical_reader:
         if line[1] == "None":
             pass
@@ -43,11 +45,11 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
             if patient[0] in histology_dict:
                 writer.writerow(histology_dict[patient[0]])
             else:
-                writer.writerow(patient[0])
+                writer.writerow([patient[0]])
 
     for file in cbioportal_file_list:
         cbioportal_dict = {}
-        reader = csv.reader(open(file, 'r'), delimiter=',')
+        reader = csv.reader(open(file, 'r'), delimiter='\t')
         writer = csv.writer(open('source/' + os.path.basename(file), 'w'),
                             delimiter=',')
         ids = reader.next()[2:]
@@ -67,7 +69,7 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
             if patient[0] in cbioportal_dict:
                 writer.writerow(cbioportal_dict[patient[0]])
             else:
-                writer.writerow(patient[0])
+                writer.writerow([patient[0]])
 
 
 if __name__ == "__main__":
