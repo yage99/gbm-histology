@@ -15,7 +15,7 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
     clinical_reader = csv.reader(open(clinical_file, 'r'), delimiter=',')
     clinical_data = []
     # bypass header
-    clinical_reader.next()
+    header = clinical_reader.next()
     for line in clinical_reader:
         if line[1] == "None":
             pass
@@ -25,6 +25,7 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
     clinical_writer = csv.writer(
         open('source/' + os.path.basename(clinical_file), 'w'),
         delimiter=',')
+    clinical_writer.writerow(header)
     for line in clinical_data:
         clinical_writer.writerow(line)
 
@@ -41,11 +42,13 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
             histology_dict[id] = line
 
         writer.writerow(header)
+        emptyrow = [None] * (len(header) - 1)
         for patient in clinical_data:
             if patient[0] in histology_dict:
                 writer.writerow(histology_dict[patient[0]])
             else:
-                writer.writerow([patient[0]])
+                emptyrow[0] = patient[0]
+                writer.writerow(emptyrow)
 
     for file in cbioportal_file_list:
         cbioportal_dict = {}
@@ -65,11 +68,13 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
                 cbioportal_dict[ids[i]].append(line[i])
 
         writer.writerow(header)
+        emptyrow = [None] * (len(header) - 1)
         for patient in clinical_data:
             if patient[0] in cbioportal_dict:
                 writer.writerow(cbioportal_dict[patient[0]])
             else:
-                writer.writerow([patient[0]])
+                emptyrow[0] = patient[0]
+                writer.writerow(emptyrow)
 
 
 if __name__ == "__main__":
