@@ -42,7 +42,7 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
             histology_dict[id] = line
 
         writer.writerow(header)
-        emptyrow = [None] * len(header)
+        emptyrow = ['NA'] * len(header)
         for patient in clinical_data:
             if patient[0] in histology_dict:
                 writer.writerow(histology_dict[patient[0]])
@@ -68,7 +68,7 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
                 cbioportal_dict[ids[i]].append(line[i])
 
         writer.writerow(header)
-        emptyrow = [None] * len(header)
+        emptyrow = ['NA'] * len(header)
         for patient in clinical_data:
             if patient[0] in cbioportal_dict:
                 line = cbioportal_dict[patient[0]]

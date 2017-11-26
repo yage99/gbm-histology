@@ -2,18 +2,26 @@ function [histology_cell, histology_cytoplasm, histology_nulei,...
           clinical, data_expression, data_cna, data_mrna] = ...
         loaddata()
 
-histology_cell = readtable('../source/cell.csv', 'TreatAsEmpty', 'NA');
-histology_cytoplasm = readtable('../source/cytoplasm.csv');
-histology_nulei = readtable('../source/nulei.csv');
+histology_cell = readtable('../source/cell.csv', 'TreatAsEmpty', ...
+                           'NA');
+% histology_cell{:, 2:end} = str2double(histology_cell{:, 2:end});
+histology_cytoplasm = readtable('../source/cytoplasm.csv', ...
+                                'TreatAsEmpty', 'NA');
+% histology_cytoplasm{:, 2:end} = str2double(histology_cytoplasm{:, ...
+%                    2:end});
+histology_nulei = readtable('../source/nulei.csv', 'TreatAsEmpty', ...
+                            'NA');
+%histology_nulei{:, 2:end} = str2double(histology_nulei{:, 2:end});
 
 clinical = readtable('../source/clinical.csv');
 
 data_expression = readtable('../source/data_expression_Zscores.txt', ...
                             'TreatAsEmpty', 'NA');
 % TODO: change to zscore
-data_cna = readtable('../source/data_linear_CNA.txt');
+data_cna = readtable('../source/data_linear_CNA.txt', 'TreatAsEmpty', ...
+                     'NA');
 data_mrna = readtable('../source/data_mRNA_median_Zscores.txt', ...
-                      'TreatAsEmpty', 'NA');
+                      'TreatAsEmpty', {'NA'});
 
 keeps = true(height(clinical), 1);
 [keeps] = delnan(histology_cell, keeps);
