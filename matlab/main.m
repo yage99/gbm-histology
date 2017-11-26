@@ -12,5 +12,14 @@ data = [data_expression{:,2:end}, data_cna{:, 2:end}, data_mrna{:, ...
                     2:end}];
 feature_indc = mrmr_miq_d(data, class, 100);
 
+data = data(:, feature_indc);
 
+indcs = crossvalind('Kfold', length(class), 10);
+result = zeros(size(class));
+for i=1:10
+    [result(indcs==i),~] = ...
+        mklclassify(data(indcs~=i, :), class(indcs~=i), ...
+                    data(indcs==i,:), class(indcs==i), 300);
+end
 
+fastAUC(class == 1, result)
