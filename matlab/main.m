@@ -10,7 +10,7 @@ class = class*2 - 1;
 
 data = [data_expression{:,2:end}, data_cna{:, 2:end}, data_mrna{:, ...
                     2:end}];
-feature_indc = mrmr_miq_d(data, class, 100);
+feature_indc = mrmr_miq_d(data, class, 150);
 
 data = data(:, feature_indc);
 
