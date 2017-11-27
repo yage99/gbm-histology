@@ -31,9 +31,11 @@ def calc_density(image, threshold=150):
             # black pixel don't count
             if pixel[i, j][0] + pixel[i, j][1] + pixel[i, j][2] < 50:
                 continue
-            
-            if pixel[i, j][0] < threshold:
+
+            # red pixel has a minium
+            if pixel[i, j][0] < threshold and pixel[i, j][0] > 50:
                 color_count = color_count + 1
+            # green pixel
             if pixel[i, j][1] < threshold:
                 color_count = color_count + 1
             if pixel[i, j][2] < threshold:
@@ -51,7 +53,6 @@ def calc_task(folder, image_file):
     density = calc_density(Image.open(os.path.join(folder, image_file)))
 
     return (folder, image_file, density)
-
 
 def task_callback(result):
     import re
@@ -88,7 +89,8 @@ patients = {}
 start_time = 0
 
 
-def main(folder, target_folder, task_pool=20, tmpfilename="image_metas.pkl"):
+def main(folder, target_folder, task_pool=20,
+         tmpfilename="image_metas.pkl"):
     print("data file name: %s" % tmpfilename)
     if not os.path.isfile(tmpfilename):
         print "image density not exists, calculating"
@@ -130,7 +132,8 @@ def main(folder, target_folder, task_pool=20, tmpfilename="image_metas.pkl"):
             shutil.copyfile(os.path.join(folder, key),
                             os.path.join(target_folder, id, key))
             copy_count = copy_count + 1
-            printProgressBar(copy_count, copy_all_count, prefix=id, length=30)
+            printProgressBar(copy_count, copy_all_count, prefix=id,
+                             length=30)
 
     print "copy finished"
 
