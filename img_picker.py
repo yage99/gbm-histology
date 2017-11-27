@@ -54,6 +54,7 @@ def calc_task(folder, image_file):
 
     return (folder, image_file, density)
 
+
 def task_callback(result):
     import re
     global task_count, task_sum, patients, start_time

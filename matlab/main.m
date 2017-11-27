@@ -53,3 +53,5 @@ for i=1:10
 end
 
 experiment.histology = fastAUC(class == 1, result);
+
+experiment
