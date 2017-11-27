@@ -1,11 +1,12 @@
 function [result, weights] = mklclassify(xapp, yapp, xtest, ytest, ...
-                                         C )
+                                         C, kernel, kerneloptionvect, ...
+                                         variablevec)
 % Example of how to use the mklsvm for  classification
 %
 %
 %ratio=0.75;
 %C = [300];
-verbose=2;
+verbose=0;
 
 options.algo='svmclass';
 % Choice of algorithm in mklsvm can be
@@ -63,12 +64,17 @@ options.efficientkernel=0;         % use efficient storage of
 %--------------------------------------------------------------------
 %                   Building the kernels parameters
 %--------------------------------------------------------------------
-kernel = {'gaussian' 'gaussian' 'gaussian' 'gaussian' 'gaussian'};
+kernel = {'gaussian' 'gaussian' 'gaussian' 'gaussian' 'gaussian' ...
+          'gaussian' 'gaussian' 'gaussian' 'gaussian' 'gaussian'};
 kerneloptionvect = {[0.5 1 2 5 7 10 12 15 17 20] [0.5 1 2 5 7 10 12 ...
                     15 17 20] [5 7 10 12 15 17 20] [5 7 10 12 15 17 ...
-                    20 ] [0.5 1 2 5 7 10 12 15 17 20]};
+                    20 ] [0.5 1 2 5 7 10 12 15 17 20] [0.5 1 2 5 7 ...
+                    10 12 15 17 20] [0.5 1 2 5 7 10 12 15 17 20] ...
+                    [0.5 1 2 5 7 10 12 15 17 20] [0.5 1 2 5 7 10 12 ...
+                    15 17 20] [0.5 1 2 5 7 10 12 15 17 20]};
+variablevec={'random' 'random' 'random' 'random' 'random' 'random' ...
+             'random' 'random' 'random' 'random'};
 
-variablevec={'random' 'random' 'random' 'random' 'random'};
 %for i=7:20
 %    kernel = [kernel 'gaussian'];
 %    kerneloptionvect = [kerneloptionvect [0.5 1 2 5 7 10 12 15 17
