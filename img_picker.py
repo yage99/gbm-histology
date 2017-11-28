@@ -18,10 +18,62 @@ import time
 import sys
 
 
+def rgb2lab(inputColor):
+    num = 0
+    RGB = [0, 0, 0]
+
+    for value in inputColor:
+        value = float(value) / 255
+
+        if value > 0.04045:
+            value = ((value + 0.055) / 1.055) ** 2.4
+        else:
+            value = value / 12.92
+
+        RGB[num] = value * 100
+        num = num + 1
+
+    XYZ = [0, 0, 0, ]
+
+    X = RGB[0] * 0.4124 + RGB[1] * 0.3576 + RGB[2] * 0.1805
+    Y = RGB[0] * 0.2126 + RGB[1] * 0.7152 + RGB[2] * 0.0722
+    Z = RGB[0] * 0.0193 + RGB[1] * 0.1192 + RGB[2] * 0.9505
+    XYZ[0] = round(X, 4)
+    XYZ[1] = round(Y, 4)
+    XYZ[2] = round(Z, 4)
+
+    XYZ[0] = float(XYZ[0]) / 95.047
+    # ref_X =  95.047   Observer=2 degree, Illuminant= D65
+    XYZ[1] = float(XYZ[1]) / 100.0          # ref_Y = 100.000
+    XYZ[2] = float(XYZ[2]) / 108.883        # ref_Z = 108.883
+
+    num = 0
+    for value in XYZ:
+        if value > 0.008856:
+            value = value ** (1.0/3)
+        else:
+            value = (7.787 * value) + (16.0 / 116)
+
+        XYZ[num] = value
+        num = num + 1
+
+    Lab = [0, 0, 0]
+
+    L = (116 * XYZ[1]) - 16
+    a = 500 * (XYZ[0] - XYZ[1])
+    b = 200 * (XYZ[1] - XYZ[2])
+
+    Lab[0] = round(L, 4)
+    Lab[1] = round(a, 4)
+    Lab[2] = round(b, 4)
+
+    return Lab
+
+
 def calc_density(image, threshold=150):
     pixel = image.load()
 
-    pixel_count = image.size[0] * image.size[1] * 3
+    pixel_count = image.size[0] * image.size[1]
     color_count = 0
     for i in range(image.size[0]):
         for j in range(image.size[1]):
@@ -32,14 +84,19 @@ def calc_density(image, threshold=150):
             if pixel[i, j][0] + pixel[i, j][1] + pixel[i, j][2] < 50:
                 continue
 
+            # using lab color space
+            lab = rgb2lab(pixel[i, j])
+            if lab[1] > 10:
+                # red pixel
+                color_count += 1
             # red pixel has a minium
-            if pixel[i, j][0] < threshold and pixel[i, j][0] > 50:
-                color_count = color_count + 1
+            # if pixel[i, j][0] < threshold and pixel[i, j][0] > 50:
+            #    color_count = color_count + 1
             # green pixel
-            if pixel[i, j][1] < threshold:
-                color_count = color_count + 1
-            if pixel[i, j][2] < threshold:
-                color_count = color_count + 1
+            # if pixel[i, j][1] < threshold:
+            #    color_count = color_count + 1
+            # if pixel[i, j][2] < threshold:
+            #    color_count = color_count + 1
 
     return color_count / float(pixel_count)
 
@@ -140,7 +197,9 @@ def main(folder, target_folder, task_pool=20,
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 3:
+        main(sys.argv[1], sys.argv[2], tmpfilename=sys.argv[3])
+    elif len(sys.argv) > 1:
         main("/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
 svs-processed",
              "/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
