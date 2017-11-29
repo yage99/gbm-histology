@@ -85,7 +85,7 @@ def calc_density(image, threshold=150):
                 continue
 
             # using lab color space
-            lab = rgb2lab(pixel[i, j])
+            lab = rgb2lab(pixel[i, j][:3])
             if lab[1] > 10:
                 # red pixel
                 color_count += 1
@@ -166,7 +166,7 @@ def main(folder, target_folder, task_pool=20,
             # i = i + 1
             # if i==10:
             #    break
-            # calc_task(os.path.join(folder, image_file))
+            # calc_task(folder, image_file)
             pool.apply_async(calc_task, (folder, image_file, ),
                              callback=task_callback)
         pool.close()
