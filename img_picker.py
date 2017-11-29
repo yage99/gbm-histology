@@ -23,6 +23,7 @@ def calc_density(image_file, threshold=150):
     lab = color.rgb2lab(color.rgba2rgb(rgb))
 
     pixel_count = lab.shape[0] * lab.shape[1]
+    # the a channel should bigger than 10 (red)
     color_count = sum(sum(lab[:, :, 1] > 10))
 
     return color_count / float(pixel_count)
