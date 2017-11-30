@@ -61,12 +61,10 @@ def main(folder, working_dir='.', filelist_name='filelist',
 
         printProgressBar(task_count.value,
                          all_img_count,
-                         prefix=("%d/%d (%d/%d)"
+                         prefix=("%d/%d"
                                  % (thread_count.value,
-                                    thread_total,
-                                    task_count.value,
-                                    all_img_count)),
-                         start_time=time_start,
+                                    thread_total)),
+                         time_start=time_start,
                          length=50)
         time.sleep(0.5)
 
@@ -97,11 +95,11 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
     
     print "Task %d started" % thread_index
     img_num_retriver = re.compile('# ([0-9]*)')
+    err = re.compile('error', flags=re.I)
     last_num = start
     with open(os.path.join(output_folder, 'log.log'),
               'w') as log_file:
         for line in iter(subprocess.stderr.readline, b''):
-            log_file.write(line)
 
             if img_num_retriver.search(line) is not None:
                 num = int(img_num_retriver.search(line).group(1))
@@ -111,6 +109,10 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
                         task_count.value += (num - last_num)
                         
                     last_num = num
+
+            # only write error messages
+            if err.search(line) is not None:
+                log_file.write(line)
 
     print "Task %d finished" % thread_index
 
