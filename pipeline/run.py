@@ -34,11 +34,11 @@ def main(folder, working_dir='.', filelist_name='filelist',
     pool = Pool(thread_num)
 
     all_img_count = len(filelist)
-    img_per_task = all_img_count / thread_num
+    img_per_task = 100
+    thread_total = all_img_count / img_per_task
     
     print 'Starting tasks'
-    thread_total = 0
-    for i in range(thread_num):
+    for i in range(thread_total):
         sp.call(['rm', '-rf', 'outputs%d' % i])
         sp.call(['mkdir', os.path.join(working_dir, 'outputs%d' % i)])
 
@@ -51,8 +51,6 @@ def main(folder, working_dir='.', filelist_name='filelist',
         pool.apply_async(generating_task,
                          (working_dir, project_file, filelist_name,
                           i, start, end,))
-
-        thread_total += 1
 
     time_start = time.time()
     while(True):

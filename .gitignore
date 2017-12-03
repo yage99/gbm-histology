@@ -2,3 +2,5 @@ check_cells/*.log
 check_cells/outputs*
 check_cells/filelist
 check_cells/all.csv
+pipeline/*.log
+pipeline/outputs*
