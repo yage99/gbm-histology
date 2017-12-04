@@ -15,7 +15,9 @@ import pickle
 from multiprocessing import Pool
 import time
 import sys
+import numpy as np
 from skimage import io, color
+import re
 
 
 def calc_density(image_file, threshold=150):
@@ -24,13 +26,15 @@ def calc_density(image_file, threshold=150):
 
     pixel_count = lab.shape[0] * lab.shape[1]
     # the a channel should bigger than 10 (red)
-    color_count = sum(sum(lab[:, :, 1] > 10))
+    color_count = np.sum(np.logical_and(lab[:, :, 1] > 10,
+                                        lab[:, :, 2] > -30))
 
     return color_count / float(pixel_count)
 
 
 task_count = 0
 task_sum = 0
+id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
 
 
 def calc_task(folder, image_file):
@@ -41,13 +45,11 @@ def calc_task(folder, image_file):
 
 
 def task_callback(result):
-    import re
-    global task_count, task_sum, patients, start_time
+    global task_count
 
     folder, image_file, density = result
-    id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
     id = id_matcher.search(image_file).group()
-    
+
     if id in patients:
         patients[id][image_file] = density
     else:
@@ -55,19 +57,10 @@ def task_callback(result):
 
     task_count = task_count + 1
 
-    current_time = time.time()
-    used_time = current_time - start_time
-    time_each = used_time / task_count
-    left_time = time_each * (task_sum - task_count)
-
     # used_time_str = ("%d:%d" % (int(used_time / 60), int(used_time % 60)))
-    left_time_str = ("%02d:%02d:%02d" % (int(left_time / 3600),
-                                         int((left_time % 3600) / 60),
-                                         int(left_time % 60)))
 
-    printProgressBar(task_count, task_sum,
-                     prefix=("%s (%d/%d)" % (id, task_count, task_sum)),
-                     suffix=("left: %s" % left_time_str),
+    printProgressBar(task_count, task_sum, time_start=start_time,
+                     prefix=("%s" % id),
                      length=30)
 
 
@@ -81,7 +74,7 @@ def main(folder, target_folder, task_pool=20,
     if not os.path.isfile(tmpfilename):
         print "image density not exists, calculating"
         global task_count, task_sum, patients, start_time
-    
+
         patients = {}
 
         task_sum = len(os.listdir(folder))
@@ -102,10 +95,16 @@ def main(folder, target_folder, task_pool=20,
 
         with open(tmpfilename, "wb") as output:
             pickle.dump(patients, output)
+
+        time_task_end = time.time()
+        time_used = time_task_end - start_time
+        print("timed used: %dh%dm%ds" % (time_used / 3600,
+                                         (time_used % 3600) / 60,
+                                         time_used % 60))
     else:
         print "using existing density file: %s" % tmpfilename
         patients = pickle.load(open(tmpfilename, "rb"))
-        
+
     print "start copy file"
 
     copy_all_count = len(patients) * 20
