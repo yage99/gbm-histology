@@ -57,22 +57,12 @@ def main(folder, working_dir='.', filelist_name='filelist',
         if thread_count.value >= thread_total:
             break
 
-        current_time = time.time()
-        left_time = ((current_time - time_start)
-                     / task_count.value
-                     * (all_img_count - task_count.value))
-        left_time_str = ("%02d:%02d:%02d"
-                         % (int(left_time / 3600),
-                            int((left_time % 3600) / 60),
-                            int(left_time % 60)))
         printProgressBar(task_count.value,
                          all_img_count,
-                         prefix=("%d/%d (%d/%d)"
+                         prefix=("%d/%d"
                                  % (thread_count.value,
-                                    thread_total,
-                                    task_count.value,
-                                    all_img_count)),
-                         suffix=left_time_str,
+                                    thread_total)),
+                         time_start=time_start,
                          length=50)
         time.sleep(0.5)
 
@@ -92,7 +82,8 @@ def generating_task(working_dir, filelist_name, thread_index,
              os.path.join(working_dir, filelist_name),
              '-o',
              output_folder])
-
+    
+    print "Task %d started" % thread_index
     subprocess = sp.Popen(['cellprofiler', '-p',
                            os.path.join(output_folder,
                                         'Batch_data.h5'),
@@ -100,8 +91,7 @@ def generating_task(working_dir, filelist_name, thread_index,
                            '-l', '%d' % end],
                           stdout=sp.PIPE,
                           stderr=sp.PIPE)
-    
-    print "Task %d started" % thread_index
+
     img_num_retriver = re.compile('# ([0-9]*)')
     last_num = start
     with open(os.path.join(output_folder, 'log.log'),
