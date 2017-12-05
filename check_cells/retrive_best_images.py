@@ -40,7 +40,7 @@ def read_info(filename, all_infos):
         return all_infos
 
 
-def main():
+def main(source_dir, output_dir):
     all_infos = {}
     for i in range(20):
         file = "outputs%d/MyExpt_Image.csv" % i
@@ -53,8 +53,7 @@ def main():
     i = 0
 
     print "clean output folder"
-    output_folder = "/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/\
-zhangya/svs-best"
+    output_folder = output_dir
     sp.call(['rm', '-r', output_folder])
     sp.call(['mkdir', output_folder])
 
@@ -65,11 +64,13 @@ zhangya/svs-best"
         for key, value in sorted(all_infos[id].iteritems(),
                                  key=lambda (k, v): (v, k))[-10:]:
             parent_folder = id_matcher.search(key).group()
-            source = os.path.join("/media/af214dbe-b6fa-4f5e\
--932a-14b133ba4766/zhangya/svs-selected", parent_folder, key)
+            source = os.path.join(source_dir, parent_folder, key)
             target = os.path.join(output_folder, key)
             shutil.copy(source, target)
 
 
 if __name__ == "__main__":
-    main()
+    main('/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
+svs-selected',
+         '/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
+svs-best')

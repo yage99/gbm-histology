@@ -82,7 +82,7 @@ def generating_task(working_dir, filelist_name, thread_index,
              os.path.join(working_dir, filelist_name),
              '-o',
              output_folder])
-    
+
     print "Task %d started" % thread_index
     subprocess = sp.Popen(['cellprofiler', '-p',
                            os.path.join(output_folder,
