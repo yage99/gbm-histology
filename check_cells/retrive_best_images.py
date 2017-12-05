@@ -47,6 +47,12 @@ def main(source_dir, output_dir):
         print 'reading file %s' % file
         read_info(file, all_infos)
 
+    print "writing list file"
+    with open('cell_counts.csv', 'w') as f:
+        for id, images in all_infos:
+            for name, count in images:
+                f.write("%s,%d\n" % (name, count))
+
     print "copying files"
 
     all = len(all_infos)
