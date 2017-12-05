@@ -44,8 +44,11 @@ def calc_task(folder, image_file):
     return (folder, image_file, density)
 
 
+last_show_time = 0
+
+
 def task_callback(result):
-    global task_count
+    global task_count, last_show_time
 
     folder, image_file, density = result
     id = id_matcher.search(image_file).group()
@@ -59,9 +62,11 @@ def task_callback(result):
 
     # used_time_str = ("%d:%d" % (int(used_time / 60), int(used_time % 60)))
 
-    printProgressBar(task_count, task_sum, time_start=start_time,
-                     prefix=("%s" % id),
-                     length=30)
+    if(last_show_time != time.time()):
+        printProgressBar(task_count, task_sum, time_start=start_time,
+                         prefix=("%s" % id),
+                         length=30)
+        last_show_time = time.time()
 
 
 patients = {}
@@ -109,6 +114,7 @@ def main(folder, target_folder, task_pool=20,
 
     copy_all_count = len(patients) * 20
     copy_count = 0
+    time_start = time.time()
     for id in patients:
         if not os.path.exists(os.path.join(target_folder, id)):
             os.mkdir(os.path.join(target_folder, id))
@@ -117,7 +123,8 @@ def main(folder, target_folder, task_pool=20,
             shutil.copyfile(os.path.join(folder, key),
                             os.path.join(target_folder, id, key))
             copy_count = copy_count + 1
-            printProgressBar(copy_count, copy_all_count, prefix=id,
+            printProgressBar(copy_count, copy_all_count,
+                             time_start=time_start, prefix=id,
                              length=30)
 
     print "copy finished"
