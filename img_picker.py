@@ -18,6 +18,7 @@ import sys
 import numpy as np
 from skimage import io, color
 import re
+import subprocess32 as sp
 
 
 def calc_density(image_file, threshold=150):
@@ -41,6 +42,13 @@ def calc_task(folder, image_file):
 
     density = calc_density(os.path.join(folder, image_file))
 
+    # blank files
+    if(density < 0.05):
+        sp.call(['mv', os.path.join(folder, image_file),
+                 '/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
+svs-processed-blanks'])
+        return None
+
     return (folder, image_file, density)
 
 
@@ -50,13 +58,14 @@ last_show_time = 0
 def task_callback(result):
     global task_count, last_show_time
 
-    folder, image_file, density = result
-    id = id_matcher.search(image_file).group()
+    if(result is not None):
+        folder, image_file, density = result
+        id = id_matcher.search(image_file).group()
 
-    if id in patients:
-        patients[id][image_file] = density
-    else:
-        patients[id] = {image_file: density}
+        if id in patients:
+            patients[id][image_file] = density
+        else:
+            patients[id] = {image_file: density}
 
     task_count = task_count + 1
 
@@ -64,7 +73,6 @@ def task_callback(result):
 
     if(last_show_time != time.time()):
         printProgressBar(task_count, task_sum, time_start=start_time,
-                         prefix=("%s" % id),
                          length=30)
         last_show_time = time.time()
 
@@ -112,7 +120,7 @@ def main(folder, target_folder, task_pool=20,
 
     print "start copy file"
 
-    copy_all_count = len(patients) * 20
+    copy_all_count = len(patients) * 40
     copy_count = 0
     time_start = time.time()
     for id in patients:
