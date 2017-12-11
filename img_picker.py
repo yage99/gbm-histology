@@ -71,7 +71,7 @@ def task_callback(result):
 
     # used_time_str = ("%d:%d" % (int(used_time / 60), int(used_time % 60)))
 
-    if(last_show_time != time.time()):
+    if(last_show_time < time.time()):
         printProgressBar(task_count, task_sum, time_start=start_time,
                          length=30)
         last_show_time = time.time()

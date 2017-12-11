@@ -115,5 +115,4 @@ def generating_task(working_dir, filelist_name, thread_index,
 
 
 if __name__ == '__main__':
-    main('/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-selected')
+    main('/home/zhangya/GBM/data/svs-selected')

@@ -77,7 +77,5 @@ def main(source_dir, output_dir):
 
 
 if __name__ == "__main__":
-    main('/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-selected',
-         '/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-best')
+    main('/home/zhangya/GBM/data/svs-selected',
+         '/home/zhangya/GBM/data/svs-best')

@@ -120,8 +120,7 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        main('/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-best')
+        main('~/GBM/data/svs-best-deleted')
     elif len(sys.argv) == 4:
         main(folder=sys.argv[1], working_dir=sys.argv[2],
              project_file=sys.argv[3])
