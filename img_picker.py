@@ -45,8 +45,7 @@ def calc_task(folder, image_file):
     # blank files
     if(density < 0.05):
         sp.call(['mv', os.path.join(folder, image_file),
-                 '/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-processed-blanks'])
+                 'data/svs-processed-blanks'])
         return None
 
     return (folder, image_file, density)
@@ -145,13 +144,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 3:
         main(sys.argv[1], sys.argv[2], tmpfilename=sys.argv[3])
     elif len(sys.argv) > 1:
-        main("/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-processed",
-             "/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-selected",
+        main("data/svs-processed",
+             "data/svs-selected",
              tmpfilename=sys.argv[1])
     else:
-        main("/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-processed",
-             "/media/af214dbe-b6fa-4f5e-932a-14b133ba4766/zhangya/\
-svs-selected")
+        main("data/svs-processed",
+             "data/svs-selected")
