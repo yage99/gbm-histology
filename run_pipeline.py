@@ -39,11 +39,17 @@ def main(folder, working_dir='.', filelist_name='filelist',
     all_img_count = len(filelist)
     if batch_mode == 'fix thread':
         thread_total = thread_num
-        img_per_task = all_img_count / thread_total
+        if all_img_count % thread_total == 0:
+            img_per_task = all_img_count / thread_total
+        else:
+            img_per_task = all_img_count / (thread_total - 1)
     else:
         img_per_task = batch_num
-        thread_total = all_img_count / img_per_task
-    
+        if all_img_count % img_per_task == 0:
+            thread_total = all_img_count / img_per_task
+        else:
+            thread_total = all_img_count / img_per_task + 1
+
     print 'Starting tasks'
     for i in range(thread_total):
         sp.call(['rm', '-rf',
