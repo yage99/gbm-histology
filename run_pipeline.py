@@ -103,7 +103,7 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
                           stdout=sp.PIPE,
                           stderr=sp.PIPE)
     
-    print "Task %d started" % thread_index
+    print "Task %d started (%d - %d)" % (thread_index, start, end)
     img_num_retriver = re.compile('# ([0-9]*)')
     err = re.compile('error', flags=re.I)
     last_num = start

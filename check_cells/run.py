@@ -33,8 +33,11 @@ def main(folder, working_dir='.', filelist_name='filelist',
     pool = Pool(thread_num)
 
     all_img_count = len(filelist)
-    img_per_task = all_img_count / thread_num
-    
+    if all_img_count % thread_num == 0:
+        img_per_task = all_img_count / thread_num
+    else:
+        img_per_task = all_img_count / (thread_num - 1)
+        
     print 'Starting tasks'
     thread_total = 0
     for i in range(thread_num):
@@ -83,7 +86,7 @@ def generating_task(working_dir, filelist_name, thread_index,
              '-o',
              output_folder])
 
-    print "Task %d started" % thread_index
+    print "Task %d started (%d - %d)" % (thread_index, start, end)
     subprocess = sp.Popen(['cellprofiler', '-p',
                            os.path.join(output_folder,
                                         'Batch_data.h5'),

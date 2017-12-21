@@ -96,11 +96,12 @@ def main(dirname, outputname, task_pool=20):
             del all_data_matrix['title']
             
             all = len(all_data_matrix)
+            time_start = time.time()
             i = 0
             for id in all_data_matrix:
                 i = i + 1
                 printProgressBar(i, all,
-                                 prefix=("%s(%d/%d)" % (id, i, all)),
+                                 time_start=time_start
                                  length=40)
                 matrix = all_data_matrix[id]
                 if(len(matrix) < 10):
@@ -189,4 +190,7 @@ def recurse_find(dirname, results, contains):
 
 
 if __name__ == "__main__":
-    main(".", "cell.csv")
+    if len(sys.argv) == 2:
+        main(sys.argv[1], "cell.csv")
+    else:
+        print('enter the pipline output dir')
