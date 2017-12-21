@@ -101,7 +101,7 @@ def main(dirname, outputname, task_pool=20):
             for id in all_data_matrix:
                 i = i + 1
                 printProgressBar(i, all,
-                                 time_start=time_start
+                                 time_start=time_start,
                                  length=40)
                 matrix = all_data_matrix[id]
                 if(len(matrix) < 10):
