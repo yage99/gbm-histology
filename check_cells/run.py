@@ -44,9 +44,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
         sp.call(['rm', '-rf', 'outputs%d' % i])
         sp.call(['mkdir', os.path.join(working_dir, 'outputs%d' % i)])
 
-        start = i * img_per_task
-        if start == 0:
-            start = 1
+        start = i * img_per_task + 1
         end = (i + 1) * img_per_task
         if end > all_img_count:
             end = all_img_count

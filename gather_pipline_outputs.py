@@ -68,14 +68,14 @@ def main(dirname, outputname, task_pool=20):
             pool.apply_async(file_processor, (filename, ),
                              callback=task_callback)
 
+        time_start = time.time()
         while(thread_finished.value < len(cellfiles)):
             printProgressBar(thread_count.value,
                              thread_total.value,
-                             prefix=("%d/%d (%d/%d)"
+                             prefix=("%d/%d"
                                      % (thread_finished.value,
-                                        len(cellfiles),
-                                        thread_count.value,
-                                        thread_total.value)),
+                                        len(cellfiles))),
+                             time_start=time_start,
                              length=50)
             time.sleep(0.1)
 
