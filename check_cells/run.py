@@ -4,6 +4,7 @@ from multiprocessing import Pool, Value
 import sys
 import re
 import time
+import math
 
 sys.path.append('../')
 from TCGAMaxim.utils import printProgressBar  # noqa: E402
@@ -33,11 +34,8 @@ def main(folder, working_dir='.', filelist_name='filelist',
     pool = Pool(thread_num)
 
     all_img_count = len(filelist)
-    if all_img_count % thread_num == 0:
-        img_per_task = all_img_count / thread_num
-    else:
-        img_per_task = all_img_count / (thread_num - 1)
-        
+    img_per_task = math.ceil(all_img_count / float(thread_num))
+
     print 'Starting tasks'
     thread_total = 0
     for i in range(thread_num):
