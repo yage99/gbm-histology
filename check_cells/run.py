@@ -61,8 +61,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
                          prefix=("%d/%d"
                                  % (thread_count.value,
                                     thread_total)),
-                         time_start=time_start,
-                         length=50)
+                         time_start=time_start)
         time.sleep(0.5)
 
     pool.close()
@@ -71,7 +70,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
 
 def generating_task(working_dir, filelist_name, thread_index,
                     start, end):
-    
+
     output_folder = os.path.join(working_dir,
                                  'outputs%d' % thread_index)
     print "generating batch file %d" % thread_index
@@ -104,7 +103,7 @@ def generating_task(working_dir, filelist_name, thread_index,
                 if last_num != num:
                     with task_count.get_lock():
                         task_count.value += (num - last_num)
-                        
+
                     last_num = num
 
     print "Task %d finished" % thread_index

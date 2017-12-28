@@ -40,10 +40,10 @@ def main(folder, working_dir='.', filelist_name='filelist',
     all_img_count = len(filelist)
     if batch_mode == 'fix thread':
         thread_total = thread_num
-        img_per_task = math.ceil(all_img_count / float(thread_total))
+        img_per_task = int(math.ceil(all_img_count / float(thread_total)))
     else:
         img_per_task = batch_num
-        thread_total = math.ceil(all_img_count / float(img_per_task))
+        thread_total = int(math.ceil(all_img_count / float(img_per_task)))
 
     print 'Starting tasks'
     for i in range(thread_total):
@@ -69,8 +69,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
                          prefix=("%d/%d"
                                  % (thread_count.value,
                                     thread_total)),
-                         time_start=time_start,
-                         length=50)
+                         time_start=time_start)
         time.sleep(0.5)
 
     pool.close()
@@ -79,7 +78,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
 
 def generating_task(working_dir, project_file, filelist_name, thread_index,
                     start, end):
-    
+
     output_folder = os.path.join(working_dir,
                                  'outputs%d' % thread_index)
     print "generating batch file %d" % thread_index
@@ -97,7 +96,7 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
                            '-l', '%d' % end],
                           stdout=sp.PIPE,
                           stderr=sp.PIPE)
-    
+
     print "Task %d started (%d - %d)" % (thread_index, start, end)
     img_num_retriver = re.compile('# ([0-9]*)')
     err = re.compile('error', flags=re.I)
@@ -112,7 +111,7 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
                 if last_num != num:
                     with task_count.get_lock():
                         task_count.value += (num - last_num)
-                        
+
                     last_num = num
 
             # only write error messages
@@ -128,7 +127,7 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
 if __name__ == '__main__':
 
     m_time_start = time.time()
-    
+
     if len(sys.argv) < 2:
         main('~/GBM/data/svs-best-deleted')
     elif len(sys.argv) == 4:
