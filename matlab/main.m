@@ -1,6 +1,6 @@
 addpath(genpath('~/Documents/MATLAB/tools/'))
 
-if ~exist('clinical')
+if ~exist('clinical', 'var')
     echo "loading data"
     [histology_cell, histology_cytoplasm, histology_nulei, ...
      clinical, data_expression, data_cna, data_mrna] = loaddata();
@@ -55,4 +55,4 @@ end
 
 experiment.histology = fastAUC(class == 1, result);
 
-experiment
+experiment %#ok
