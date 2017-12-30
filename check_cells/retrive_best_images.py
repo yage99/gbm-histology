@@ -6,7 +6,7 @@ cellprofiler.
 
 import csv
 import os
-import shutil
+# import shutil
 import re
 import sys
 import time
@@ -70,11 +70,12 @@ def main(source_dir, output_dir):
         i += 1
         printProgressBar(i, all_line_count, time_start=time_start)
         for key, value in sorted(all_infos[patient_id].iteritems(),
-                                 key=lambda (k, v): (v, k))[-10:]:
+                                 key=lambda (k, v): (v, k))[-20:]:
             parent_dir = ID_MATCHER.search(key).group()
             source = os.path.join(source_dir, parent_dir, key)
             target = os.path.join(output_dir, key)
-            shutil.copy(source, target)
+            sp.call(['cp', source, target])
+            # shutil.copy(source, target)
             copied_files[key] = value
 
     with open("copied_files.csv", 'w') as copied_record:

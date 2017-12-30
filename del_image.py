@@ -5,7 +5,7 @@ import subprocess32 as sp
 
 def main(filepath, working_dir, target_dir):
     file = os.path.basename(filepath)
-    
+
     print("del file %s in %s" % (file, working_dir))
     if(not os.path.exists(os.path.join('data/svs-best', file))):
         print "error %s not exist" % file
@@ -23,6 +23,12 @@ if __name__ == "__main__":
     if(not os.path.isdir(target_dir)):
         sp.call(['mkdir', target_dir])
 
-    for file in files:
-        file = os.path.basename(file)
-        main(file, working_dir, target_dir)
+    if len(sys.argv) == 2:
+        with open(sys.argv[1], 'r') as f:
+            for line in f.readlines():
+                file = os.path.basename(line[:-1])
+                main(file, working_dir, target_dir)
+    else:
+        for file in files:
+            file = os.path.basename(file)
+            main(file, working_dir, target_dir)

@@ -45,10 +45,10 @@ def main(dirname, outputname, task_pool=20):
         def task_callback(local_all_data):
             title = local_all_data['title']
             del local_all_data['title']
-            
+
             if "title" not in all_data_matrix:
                 all_data_matrix['title'] = title
-            
+
             for id in local_all_data:
                 if id in all_data_matrix:
                     all_data_matrix[id] = numpy.append(
@@ -94,7 +94,7 @@ def main(dirname, outputname, task_pool=20):
             title.insert(0, 'id')
             writer.writerow(title)
             del all_data_matrix['title']
-            
+
             all = len(all_data_matrix)
             time_start = time.time()
             i = 0
@@ -140,12 +140,12 @@ def file_processor(filename):
 
     f = open(filename, 'r')
     reader = csv.reader(f, delimiter=',')
-    
+
     local_all_data = {}
     title = reader.next()
     title = title[8:]
     local_all_data['title'] = title
-    
+
     for line in reader:
 
         id = id_matcher.search(line[2]).group()
