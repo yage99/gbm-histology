@@ -13,13 +13,21 @@ def main(source, folders):
     count = 0
     for file_list in dir_list:
         count += len(file_list)
+    key = raw_input("delete %d files(y/N)?" % count)
+    if key != 'y':
+        print 'Cancled'
+        return
 
     i = 0
+    to_delete = ['rm']
     for file_list in dir_list:
         for file in file_list:
-            sp.call(['rm', os.path.join(source, file)])
-            i += 1
-            printProgressBar(i, count)
+            if len(to_delete) >= 100:
+                i += len(to_delete)
+                sp.call(to_delete)
+                to_delete = ['rm']
+                printProgressBar(i, count)
+            to_delete.append(os.path.join(source, file))
 
 
 if __name__ == "__main__":
