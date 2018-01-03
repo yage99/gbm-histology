@@ -36,7 +36,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
     all_img_count = len(filelist)
     img_per_task = 100
     thread_total = all_img_count / img_per_task
-    
+
     print 'Starting tasks'
     for i in range(thread_total):
         sp.call(['rm', '-rf', 'outputs%d' % i])
@@ -72,7 +72,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
 
 def generating_task(working_dir, project_file, filelist_name, thread_index,
                     start, end):
-    
+
     output_folder = os.path.join(working_dir,
                                  'outputs%d' % thread_index)
     print "generating batch file %d" % thread_index
@@ -90,7 +90,7 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
                            '-l', '%d' % end],
                           stdout=sp.PIPE,
                           stderr=sp.PIPE)
-    
+
     print "Task %d started" % thread_index
     img_num_retriver = re.compile('# ([0-9]*)')
     err = re.compile('error', flags=re.I)
@@ -105,7 +105,7 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
                 if last_num != num:
                     with task_count.get_lock():
                         task_count.value += (num - last_num)
-                        
+
                     last_num = num
 
             # only write error messages

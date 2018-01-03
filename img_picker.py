@@ -36,17 +36,27 @@ def calc_density(image_file, threshold=150):
 task_count = 0
 task_sum = 0
 id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
+REMOVE_BLANK_FILES = 2
 
 
 def calc_task(folder, image_file):
+    global REMOVE_BLANK_FILES
 
     density = calc_density(os.path.join(folder, image_file))
 
     # blank files
-    if(density < 0.05):
-        sp.call(['mv', os.path.join(folder, image_file),
-                 'data/svs-processed-blanks'])
-        return None
+    if(REMOVE_BLANK_FILES != 1 and density < 0.05):
+        if REMOVE_BLANK_FILES == 2:
+            key = raw_input('delete blank files(y/N)? ')
+            if key != 'y':
+                REMOVE_BLANK_FILES = 1
+            else:
+                REMOVE_BLANK_FILES = 0
+
+        if REMOVE_BLANK_FILES == 0:
+            sp.call(['mv', os.path.join(folder, image_file),
+                     'data/svs-processed-blanks'])
+            return None
 
     return (folder, image_file, density)
 
