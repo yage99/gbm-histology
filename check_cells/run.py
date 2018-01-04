@@ -76,6 +76,7 @@ def generating_task(working_dir, filelist_name, thread_index,
     print "generating batch file %d" % thread_index
     sp.call(['cellprofiler', '-p',
              os.path.join(working_dir, 'check_cells.cpproj'),
+             '-cr',
              '--file-list',
              os.path.join(working_dir, filelist_name),
              '-o',

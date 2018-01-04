@@ -3,7 +3,7 @@ import os
 from TCGAMaxim.utils import printProgressBar
 
 
-def main(source, folders):
+def remove_dumpfile(source, folders):
     dir_list = []
     for dir in folders:
         print "finding files in folder %s" % dir
@@ -23,8 +23,8 @@ def main(source, folders):
     to_delete = ['rm']
     for file_list in dir_list:
         for file in file_list:
-            if len(to_delete) >= 100:
-                i += len(to_delete)
+            if len(to_delete) > 100:
+                i += len(to_delete) - 1
                 sp.call(to_delete)
                 to_delete = ['rm']
                 printProgressBar(i, count)
@@ -35,7 +35,7 @@ def main(source, folders):
 
 
 if __name__ == "__main__":
-    main("data/svs-processed",
-         ['data/svs-processed-blanks',
-          'data/svs-processed-deleted']
-         )
+    remove_dumpfile("data/svs-processed",
+                    ['data/svs-processed-blanks',
+                     'data/svs-processed-deleted']
+                    )
