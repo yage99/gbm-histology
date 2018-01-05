@@ -23,7 +23,7 @@ if __name__ == "__main__":
     if(not os.path.isdir(target_dir)):
         sp.call(['mkdir', target_dir])
 
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 2 and "png" not in sys.argv[1]:
         with open(sys.argv[1], 'r') as f:
             for line in f.readlines():
                 file = os.path.basename(line[:-1])

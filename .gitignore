@@ -4,3 +4,5 @@ check_cells/filelist
 check_cells/all.csv
 pipeline/*.log
 pipeline/outputs*
+*~
+*.pyc
