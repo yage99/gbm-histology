@@ -47,7 +47,7 @@ def main(folder, working_dir='.', filelist_name='filelist',
 
     print 'Starting tasks'
     for i in range(thread_total):
-        sp.call(['rm', '-rf',
+        sp.call(['rm', '-r',
                  os.path.join(working_dir, 'outputs%d' % i)])
         sp.call(['mkdir', os.path.join(working_dir, 'outputs%d' % i)])
 
@@ -129,9 +129,7 @@ if __name__ == '__main__':
 
     m_time_start = time.time()
 
-    if len(sys.argv) < 2:
-        main('~/GBM/data/svs-best-deleted')
-    elif len(sys.argv) == 4:
+    if len(sys.argv) == 4:
         main(folder=sys.argv[1], working_dir=sys.argv[2],
              project_file=sys.argv[3])
     elif len(sys.argv) == 6:
@@ -147,7 +145,7 @@ if __name__ == '__main__':
         m_time_end = time.time()
         m_time = m_time_end - m_time_start
 
-        print("time used: %dh%dm" % (m_time / 3600, m_time % 3600))
+        print("time used: %dh%dm" % (m_time / 3600, (m_time % 3600) / 60))
     else:
         print('''
 Usage:

@@ -40,7 +40,7 @@ def read_info(filename, all_infos):
         return all_infos
 
 
-def main(source_dir, output_dir):
+def main(source_dir, output_dir, overlay_dir=None):
     ''' main process '''
     all_infos = {}
     for i in range(20):
@@ -75,6 +75,8 @@ def main(source_dir, output_dir):
             source = os.path.join(source_dir, parent_dir, key)
             target = os.path.join(output_dir, key)
             sp.call(['cp', source, target])
+            if overlay_dir is not None:
+                sp.call(['mv', key.replace('png', 'tiff'), overlay_dir])
             # shutil.copy(source, target)
             copied_files[key] = value
 

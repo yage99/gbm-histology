@@ -125,8 +125,6 @@ def main(dirname, outputname, task_pool=20):
 
 
 def file_processor(filename):
-    global id_matcher
-
     line_count = 0
     with open(filename, 'r') as f:
         reader = csv.reader(f, delimiter=",")
