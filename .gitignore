@@ -1,5 +1,5 @@
-check_cells/*.log
-check_cells/outputs*
+*.log
+outputs*
 check_cells/filelist
 check_cells/all.csv
 pipeline/*.log
@@ -7,3 +7,4 @@ pipeline/outputs*
 *~
 *.pyc
 *.swp
+data/gbm-svs-data
