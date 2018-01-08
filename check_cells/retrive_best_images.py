@@ -87,5 +87,5 @@ def main(source_dir, output_dir, overlay_dir=None):
 
 
 if __name__ == "__main__":
-    main('/home/zhangya/GBM/data/svs-selected',
-         '/home/zhangya/GBM/data/svs-best')
+    main('../data/svs-selected',
+         '../data/svs-best')

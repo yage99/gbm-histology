@@ -21,8 +21,8 @@ def main(folder, working_dir='.', filelist_name='filelist',
         for file in os.listdir(folder):
             if(os.path.isdir(os.path.join(folder, file))):
                 recurse_find(os.path.join(folder, file))
-            else:
-                filelist.append(os.path.join(folder, file))
+            elif file.endswith('png'):
+                filelist.append(os.path.join(os.path.abspath(folder), file))
 
     recurse_find(folder)
 
@@ -86,8 +86,8 @@ def generating_task(working_dir, filelist_name, thread_index,
     subprocess = sp.Popen(['cellprofiler', '-p',
                            os.path.join(output_folder,
                                         'Batch_data.h5'),
-                           '-cr', '-f', '%d' % start,
-                           '-l', '%d' % end],
+                           '-cr', '-f', str(start),
+                           '-l', str(end)],
                           stdout=sp.PIPE,
                           stderr=sp.PIPE)
 
@@ -114,4 +114,4 @@ def generating_task(working_dir, filelist_name, thread_index,
 
 
 if __name__ == '__main__':
-    main('/home/zhangya/GBM/data/svs-selected')
+    main('../data/svs-selected')
