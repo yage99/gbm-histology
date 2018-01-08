@@ -4,6 +4,7 @@ from multiprocessing import Pool, Value
 import sys
 import re
 import time
+from calc_nuclei_threshold import calc_nuclei_threshold
 import math
 
 sys.path.append('../')
@@ -22,7 +23,15 @@ def main(folder, working_dir='.', filelist_name='filelist',
             if(os.path.isdir(os.path.join(folder, file))):
                 recurse_find(os.path.join(folder, file))
             elif file.endswith('png'):
-                filelist.append(os.path.join(os.path.abspath(folder), file))
+                png_file = os.path.join(os.path.abspath(folder), file)
+                if "threshold" not in png_file:
+                    threshold = calc_nuclei_threshold(png_file)
+                    new_file_name = png_file.replace(
+                        '.png', 'threshold_%f.png' % threshold)
+
+                    sp.call(['mv', png_file, new_file_name])
+                    png_file = new_file_name
+                filelist.append(png_file)
 
     recurse_find(folder)
 
