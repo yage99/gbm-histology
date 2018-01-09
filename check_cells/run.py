@@ -4,19 +4,39 @@ from multiprocessing import Pool, Value
 import sys
 import re
 import time
-from calc_nuclei_threshold import calc_nuclei_threshold
 import math
 
 sys.path.append('../')
 from TCGAMaxim.utils import printProgressBar  # noqa: E402
+from calc_nuclei_threshold import calc_nuclei_threshold  # noqa: E402
 
 thread_count = Value('d', 0)
 task_count = Value('d', 0)
 
 
+RECALC_THRESHOLD_FLAG = False
+threshold_reg = re.compile(r'(threshold_.*)*.png$')
+
+
+def calc_threshold_task(image_file):
+    if not RECALC_THRESHOLD_FLAG and "threshold" in image_file:
+        return image_file
+    threshold = calc_nuclei_threshold(image_file)
+    new_file_name = threshold_reg.sub(
+        'threshold_%f.png' % threshold, image_file)
+
+    sp.call(['mv', image_file, new_file_name])
+    return new_file_name
+
+
 def main(folder, working_dir='.', filelist_name='filelist',
-         thread_num=20):
-    filelist = []
+         thread_num=20, recalc_threshold=False):
+    global RECALC_THRESHOLD_FLAG
+
+    RECALC_THRESHOLD_FLAG = recalc_threshold
+    print 'recalculate threshold for each image'
+
+    origin_filelist = []
 
     def recurse_find(folder):
         for file in os.listdir(folder):
@@ -24,23 +44,29 @@ def main(folder, working_dir='.', filelist_name='filelist',
                 recurse_find(os.path.join(folder, file))
             elif file.endswith('png'):
                 png_file = os.path.join(os.path.abspath(folder), file)
-                if "threshold" not in png_file:
-                    threshold = calc_nuclei_threshold(png_file)
-                    new_file_name = png_file.replace(
-                        '.png', 'threshold_%f.png' % threshold)
-
-                    sp.call(['mv', png_file, new_file_name])
-                    png_file = new_file_name
-                filelist.append(png_file)
+                origin_filelist.append(png_file)
 
     recurse_find(folder)
+    pool = Pool(thread_num)
+
+    filelist = []
+
+    def calc_threshold_callback(data):
+        filelist.append(data)
+    time_start = time.time()
+    for image_file in origin_filelist:
+        pool.apply_async(calc_threshold_task, (image_file, ),
+                         callback=calc_threshold_callback)
+
+    while len(filelist) < len(origin_filelist):
+        printProgressBar(len(filelist), len(origin_filelist),
+                         time_start=time_start)
+        time.sleep(0.5)
 
     with open(os.path.join(working_dir, filelist_name),
               'w') as filelist_file:
         for item in filelist:
             filelist_file.write(item + "\n")
-
-    pool = Pool(thread_num)
 
     all_img_count = len(filelist)
     img_per_task = math.ceil(all_img_count / float(thread_num))
@@ -95,17 +121,16 @@ def generating_task(working_dir, filelist_name, thread_index,
     subprocess = sp.Popen(['cellprofiler', '-p',
                            os.path.join(output_folder,
                                         'Batch_data.h5'),
-                           '-cr', '-f', str(start),
-                           '-l', str(end)],
+                           '-cr', '-f', '%d' % start,
+                           '-l', '%d' % end],
                           stdout=sp.PIPE,
                           stderr=sp.PIPE)
 
-    img_num_retriver = re.compile('# ([0-9]*)')
+    img_num_retriver = re.compile('Image # ([0-9]*)')
     last_num = start
     with open(os.path.join(output_folder, 'log.log'),
               'w') as log_file:
         for line in iter(subprocess.stderr.readline, b''):
-            log_file.write(line)
 
             if img_num_retriver.search(line) is not None:
                 num = int(img_num_retriver.search(line).group(1))
@@ -115,6 +140,8 @@ def generating_task(working_dir, filelist_name, thread_index,
                         task_count.value += (num - last_num)
 
                     last_num = num
+            else:
+                log_file.write(line)
 
     print "Task %d finished" % thread_index
 

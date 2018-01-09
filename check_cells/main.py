@@ -1,15 +1,16 @@
 import run
+import sys
 import retrive_best_images
 import os
 import subprocess32 as sp
 
 
-def main():
+def main(recalc_threshold=False):
     selected_dir = '../data/svs-selected'
     best_dir = '../data/svs-best'
     best_overlay_dir = '../data/svs-best-overlay'
     print 'counting cell numbers'
-    run.main(selected_dir)
+    run.main(selected_dir, recalc_threshold=recalc_threshold)
 
     if(os.path.isdir(best_dir)):
         sp.call(['rm', '-r', best_dir])
@@ -26,4 +27,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 't':
+            main(True)
+    else:
+        main()
