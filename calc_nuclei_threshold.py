@@ -6,11 +6,14 @@ import numpy as np
 def calc_nuclei_threshold(image_file, threshold=150):
     rgba = io.imread(image_file)
     rgb = color.rgba2rgb(rgba)
-    # lab = color.rgb2lab(color.rgba2rgb(rgb))
+    lab = color.rgb2lab(rgb)
+    threshold = 0.5 + np.mean(lab[:, :, 1]) / 100 * 0.3
 
-    unmixed = unmix_color(rgb)
-    mean = np.mean(unmixed)
-    return mean
+    # unmixed = unmix_color(rgb)
+    # mean = np.mean(unmixed)
+    # threshold = mean * 0.6 + 0.4
+
+    return threshold
 
 
 def html_color(rgb):
@@ -78,7 +81,7 @@ def unmix_color(input_pixels):
     return image
 
 
-def get_inverse_absorbances(self, choice):
+def get_inverse_absorbances(choice):
     '''Given one of the outputs, return the red, green and blue
     absorbance'''
 
