@@ -1,17 +1,23 @@
 import sys
 import os
 import subprocess32 as sp
+import re
 
 
 def main(filepath, working_dir, target_dir):
     file = os.path.basename(filepath)
+    if 'threshold' in file:
+        thstr = re.compile(r'threshold_.*\.png$')
+        origin_file = thstr.sub('.png', file)
+    else:
+        origin_file = file
 
     print("del file %s in %s" % (file, working_dir))
     if(not os.path.exists(os.path.join('data/svs-best', file))):
         print "error %s not exist" % file
     else:
-        sp.call(['mv', os.path.join(working_dir, file),
-                 os.path.join(target_dir, file)])
+        sp.call(['mv', os.path.join(working_dir, origin_file),
+                 os.path.join(target_dir, origin_file)])
         sp.call(['rm', os.path.join('data/svs-best', file)])
 
 

@@ -135,17 +135,21 @@ def main(folder, target_folder, task_pool=20,
     for id in patients:
         if not os.path.exists(os.path.join(target_folder, id)):
             os.mkdir(os.path.join(target_folder, id))
+        count = 0
         for key, value in sorted(patients[id].iteritems(),
-                                 key=lambda (k, v): (v, k))[-40:]:
+                                 key=lambda (k, v): (v, k))[-60:]:
             try:
                 shutil.copyfile(os.path.join(folder, key),
                                 os.path.join(target_folder, id, key))
+                count += 1
             except:
                 pass
             copy_count = copy_count + 1
             printProgressBar(copy_count, copy_all_count,
                              time_start=time_start, prefix=id,
                              length=30)
+            if count >= 40:
+                continue
 
     print "copy finished"
 

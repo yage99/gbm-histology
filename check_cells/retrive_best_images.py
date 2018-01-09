@@ -66,14 +66,16 @@ def main(source_dir, output_dir, overlay_dir=None):
 
     copied_files = {}
     time_start = time.time()
+    # thstring = re.compile(r'threshold_.*\.png$')
     for patient_id in all_infos:
         i += 1
         printProgressBar(i, all_line_count, time_start=time_start)
         for key, value in sorted(all_infos[patient_id].iteritems(),
-                                 key=lambda (k, v): (v, k))[-10:]:
+                                 key=lambda (k, v): (v, k))[-20:]:
             parent_dir = ID_MATCHER.search(key).group()
             source = os.path.join(source_dir, parent_dir, key)
             target = os.path.join(output_dir, key)
+            # remove threshold info if contained
             sp.call(['cp', source, target])
             if overlay_dir is not None:
                 sp.call(['mv', key.replace('png', 'tiff'), overlay_dir])

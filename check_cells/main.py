@@ -19,7 +19,9 @@ def main(recalc_threshold=False):
     if os.path.isdir(best_overlay_dir):
         sp.call(['rm', '-r', best_overlay_dir])
     sp.call(['mkdir', best_overlay_dir])
-    sp.call(['mv', 'outputs*/*.tiff', '.'])
+    # if copy once will cause list too long error
+    for i in range(20):
+        sp.call(['mv', 'outputs%d/*.tiff' % i, '.'])
 
     print 'copying images'
     retrive_best_images.main(selected_dir, best_dir, best_overlay_dir)
