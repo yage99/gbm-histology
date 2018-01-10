@@ -122,7 +122,8 @@ def generating_task(working_dir, filelist_name, thread_index,
                            os.path.join(output_folder,
                                         'Batch_data.h5'),
                            '-cr', '-f', '%d' % start,
-                           '-l', '%d' % end],
+                           '-l', '%d' % end,
+                           '-t', os.path.expanduser('~/tmp')],
                           stdout=sp.PIPE,
                           stderr=sp.PIPE)
 
