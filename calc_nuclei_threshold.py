@@ -6,12 +6,13 @@ import numpy as np
 def calc_nuclei_threshold(image_file, threshold=150):
     rgba = io.imread(image_file)
     rgb = color.rgba2rgb(rgba)
-    lab = color.rgb2lab(rgb)
-    threshold = 0.5 + np.mean(lab[:, :, 1]) / 100 * 0.3
 
-    # unmixed = unmix_color(rgb)
-    # mean = np.mean(unmixed)
-    # threshold = mean * 0.6 + 0.4
+    # lab = color.rgb2lab(rgb)
+    # threshold = 0.5 + np.mean(lab[:, :, 1]) / 100 * 0.3
+
+    unmixed = unmix_color(rgb)
+    mean = np.mean(unmixed)
+    threshold = mean + 0.1
 
     return threshold
 
