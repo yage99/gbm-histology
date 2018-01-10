@@ -5,7 +5,7 @@ import os
 import subprocess32 as sp
 
 
-def main(recalc_threshold=False):
+def select_best_imgs(recalc_threshold=False):
     selected_dir = '../data/svs-selected'
     best_dir = '../data/svs-best'
     best_overlay_dir = '../data/svs-best-overlay'
@@ -31,6 +31,6 @@ def main(recalc_threshold=False):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         if sys.argv[1] == 't':
-            main(True)
+            select_best_imgs(True)
     else:
-        main()
+        select_best_imgs()

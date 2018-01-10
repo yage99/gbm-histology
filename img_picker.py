@@ -9,7 +9,7 @@ default. Change it according to your machine configuration.
 
 
 import os
-import shutil
+# import shutil
 from TCGAMaxim.utils import printProgressBar
 import pickle
 from multiprocessing import Pool
@@ -127,6 +127,8 @@ def main(folder, target_folder, task_pool=20,
         print "using existing density file: %s" % tmpfilename
         patients = pickle.load(open(tmpfilename, "rb"))
 
+    print 'clean target folder %s' % os.path.join(target_folder, '*')
+    sp.call(['rm', '-r', os.path.join(target_folder, '*')])
     print "start copy file"
 
     copy_all_count = len(patients) * 40
@@ -137,17 +139,17 @@ def main(folder, target_folder, task_pool=20,
             os.mkdir(os.path.join(target_folder, id))
         count = 0
         for key, value in sorted(patients[id].iteritems(),
-                                 key=lambda (k, v): (v, k))[-60:]:
-            try:
-                shutil.copyfile(os.path.join(folder, key),
-                                os.path.join(target_folder, id, key))
+                                 key=lambda (k, v): (v, k),
+                                 reverse=True)[:60]:
+            if os.path.exists(os.path.join(folder, key)):
+                sp.call(['ln', '-s', os.path.join(folder, key),
+                         os.path.join(target_folder, id, key)])
+                # shutil.copyfile(os.path.join(folder, key),
+                #                 os.path.join(target_folder, id, key))
                 count += 1
-            except:
-                pass
-            copy_count = copy_count + 1
+                copy_count = copy_count + 1
             printProgressBar(copy_count, copy_all_count,
-                             time_start=time_start, prefix=id,
-                             length=30)
+                             time_start=time_start, prefix=id)
             if count >= 40:
                 continue
 
