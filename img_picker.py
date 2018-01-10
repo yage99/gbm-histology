@@ -128,7 +128,8 @@ def main(folder, target_folder, task_pool=20,
         patients = pickle.load(open(tmpfilename, "rb"))
 
     print 'clean target folder %s' % os.path.join(target_folder, '*')
-    sp.call(['rm', '-r', os.path.join(target_folder, '*')])
+    sp.call(['rm', '-r', target_folder])
+    sp.call(['mkdir', target_folder])
     print "start copy file"
 
     copy_all_count = len(patients) * 40
@@ -142,7 +143,8 @@ def main(folder, target_folder, task_pool=20,
                                  key=lambda (k, v): (v, k),
                                  reverse=True)[:60]:
             if os.path.exists(os.path.join(folder, key)):
-                sp.call(['ln', '-s', os.path.join(folder, key),
+                sp.call(['ln', '-s',
+                         os.path.abspath(os.path.join(folder, key)),
                          os.path.join(target_folder, id, key)])
                 # shutil.copyfile(os.path.join(folder, key),
                 #                 os.path.join(target_folder, id, key))
