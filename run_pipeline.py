@@ -16,9 +16,9 @@ batch_mode = 'fix thread'
 batch_num = 20
 
 
-def main(folder, working_dir='.', filelist_name='filelist',
-         project_file='pipeline.cpproj',
-         thread_num=20):
+def run_pipeline(folder, working_dir='.', filelist_name='filelist',
+                 project_file='pipeline.cpproj',
+                 thread_num=20):
     filelist = []
 
     def recurse_find(folder):
@@ -88,7 +88,8 @@ def generating_task(working_dir, project_file, filelist_name, thread_index,
              '--file-list',
              os.path.join(working_dir, filelist_name),
              '-o',
-             output_folder])
+             output_folder,
+             '-t', os.path.expanduser('~/tmp')])
 
     subprocess = sp.Popen(['cellprofiler', '-p',
                            os.path.join(output_folder,
@@ -131,8 +132,8 @@ if __name__ == '__main__':
     m_time_start = time.time()
 
     if len(sys.argv) == 4:
-        main(folder=sys.argv[1], working_dir=sys.argv[2],
-             project_file=sys.argv[3])
+        run_pipeline(folder=sys.argv[1], working_dir=sys.argv[2],
+                     project_file=sys.argv[3])
     elif len(sys.argv) == 6:
         if sys.argv[4] == '-b':
             batch_num = int(sys.argv[5])
@@ -140,8 +141,8 @@ if __name__ == '__main__':
         elif sys.argv[4] == '-t':
             batch_num = int(sys.argv[5])
 
-        main(folder=sys.argv[1], working_dir=sys.argv[2],
-             project_file=sys.argv[3], thread_num=20)
+        run_pipeline(folder=sys.argv[1], working_dir=sys.argv[2],
+                     project_file=sys.argv[3], thread_num=20)
 
         m_time_end = time.time()
         m_time = m_time_end - m_time_start

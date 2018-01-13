@@ -149,11 +149,11 @@ def main(folder, target_folder, task_pool=20,
                 # shutil.copyfile(os.path.join(folder, key),
                 #                 os.path.join(target_folder, id, key))
                 count += 1
-                copy_count = copy_count + 1
+                copy_count += 1
             printProgressBar(copy_count, copy_all_count,
                              time_start=time_start, prefix=id)
             if count >= 40:
-                continue
+                break
 
     print "copy finished"
 

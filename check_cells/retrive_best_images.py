@@ -40,10 +40,10 @@ def read_info(filename, all_infos):
         return all_infos
 
 
-def main(source_dir, output_dir, overlay_dir=None):
+def main(source_dir, output_dir, overlay_dir=None, thread_num=20):
     ''' main process '''
     all_infos = {}
-    for i in range(20):
+    for i in range(thread_num):
         filename = "outputs%d/MyExpt_Image.csv" % i
         print 'reading filename %s' % filename
         read_info(filename, all_infos)
@@ -56,6 +56,8 @@ def main(source_dir, output_dir, overlay_dir=None):
                 inputfile.write("%s,%d\n" % (name, images[name]))
 
     print "copying files"
+    if overlay_dir is not None:
+        print 'overlay dir is %s' % overlay_dir
 
     all_line_count = len(all_infos)
     i = 0
@@ -76,7 +78,7 @@ def main(source_dir, output_dir, overlay_dir=None):
             source = os.path.join(source_dir, parent_dir, key)
             target = os.path.join(output_dir, key)
             # remove threshold info if contained
-            sp.call(['cp', source, target])
+            sp.call(['ln', '-sr', source, target])
             if overlay_dir is not None:
                 sp.call(['mv', key.replace('png', 'tiff'), overlay_dir])
             # shutil.copy(source, target)
@@ -90,4 +92,5 @@ def main(source_dir, output_dir, overlay_dir=None):
 
 if __name__ == "__main__":
     main('../data/svs-selected',
-         '../data/svs-best')
+         '../data/svs-best',
+         '../data/svs-best-overlay')

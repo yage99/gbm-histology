@@ -25,7 +25,8 @@ def calc_threshold_task(image_file):
     new_file_name = threshold_reg.sub(
         'threshold_%f.png' % threshold, image_file)
 
-    sp.call(['mv', image_file, new_file_name])
+    if new_file_name != image_file:
+        sp.call(['mv', image_file, new_file_name])
     return new_file_name
 
 
@@ -62,6 +63,10 @@ def main(folder, working_dir='.', filelist_name='filelist',
         printProgressBar(len(filelist), len(origin_filelist),
                          time_start=time_start)
         time.sleep(0.5)
+    pool.close()
+    pool.join()
+
+    pool = Pool(thread_num)
 
     with open(os.path.join(working_dir, filelist_name),
               'w') as filelist_file:
@@ -115,7 +120,8 @@ def generating_task(working_dir, filelist_name, thread_index,
              '--file-list',
              os.path.join(working_dir, filelist_name),
              '-o',
-             output_folder])
+             output_folder,
+             '-t', os.path.expanduser('~/tmp')])
 
     print "Task %d started (%d - %d)" % (thread_index, start, end)
     subprocess = sp.Popen(['cellprofiler', '-p',
