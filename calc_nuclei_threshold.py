@@ -13,7 +13,7 @@ def calc_nuclei_threshold(image_file, threshold=150):
     unmixed = unmix_color(rgb)
     # ignore black background
     mean = np.mean(unmixed[unmixed > 0.3])
-    threshold = mean + 0.1
+    threshold = mean + 0.2
     if threshold < 0.55:
         threshold = 0.55
 

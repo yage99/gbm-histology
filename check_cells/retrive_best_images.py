@@ -40,7 +40,8 @@ def read_info(filename, all_infos):
         return all_infos
 
 
-def main(source_dir, output_dir, overlay_dir=None, thread_num=20):
+def main(source_dir, output_dir, overlay_dir=None, thread_num=20,
+         num_to_retrive=10):
     ''' main process '''
     all_infos = {}
     for i in range(thread_num):
@@ -73,7 +74,7 @@ def main(source_dir, output_dir, overlay_dir=None, thread_num=20):
         i += 1
         printProgressBar(i, all_line_count, time_start=time_start)
         for key, value in sorted(all_infos[patient_id].iteritems(),
-                                 key=lambda (k, v): (v, k))[-20:]:
+                                 key=lambda (k, v): (v, k))[-num_to_retrive:]:
             parent_dir = ID_MATCHER.search(key).group()
             source = os.path.join(source_dir, parent_dir, key)
             target = os.path.join(output_dir, key)

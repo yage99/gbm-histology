@@ -141,7 +141,7 @@ def main(folder, target_folder, task_pool=20,
         count = 0
         for key, value in sorted(patients[id].iteritems(),
                                  key=lambda (k, v): (v, k),
-                                 reverse=True)[:60]:
+                                 reverse=True):
             if os.path.exists(os.path.join(folder, key)):
                 sp.call(['ln', '-s',
                          os.path.abspath(os.path.join(folder, key)),
