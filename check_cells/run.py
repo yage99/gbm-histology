@@ -1,4 +1,5 @@
 import os
+import glob
 import subprocess as sp
 from multiprocessing import Pool, Value
 import sys
@@ -78,8 +79,12 @@ def main(folder, working_dir='.', filelist_name='filelist',
 
     print 'Starting tasks'
     thread_total = 0
+    result_folders = glob.glob('outputs*')
+    command = ['rm', '-r']
+    command.extend(result_folders)
+    sp.call(command)
     for i in range(thread_num):
-        sp.call(['rm', '-rf', 'outputs%d' % i])
+        # sp.call(['rm', '-rf', 'outputs%d' % i])
         sp.call(['mkdir', os.path.join(working_dir, 'outputs%d' % i)])
 
         start = i * img_per_task + 1

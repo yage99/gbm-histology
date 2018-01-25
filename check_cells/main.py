@@ -7,7 +7,8 @@ import subprocess32 as sp
 
 
 def select_best_imgs(recalc_threshold=False):
-    THREAD_NUM = 10
+    # in my machine, 30 threads use too much memory
+    THREAD_NUM = 25
 
     selected_dir = '../data/svs-selected'
     best_dir = '../data/svs-best-new'

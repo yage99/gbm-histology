@@ -1,4 +1,5 @@
 import os
+import glob
 import subprocess as sp
 from multiprocessing import Pool, Value
 import sys
@@ -18,7 +19,7 @@ batch_num = 20
 
 def run_pipeline(folder, working_dir='.', filelist_name='filelist',
                  project_file='pipeline.cpproj',
-                 thread_num=20):
+                 thread_num=25):
     filelist = []
 
     def recurse_find(folder):
@@ -45,10 +46,19 @@ def run_pipeline(folder, working_dir='.', filelist_name='filelist',
         img_per_task = batch_num
         thread_total = int(math.ceil(all_img_count / float(img_per_task)))
 
+    print 'delete old results'
+    result_folders = glob.glob(os.path.join(working_dir, 'outputs*'))
+    # result_folders = map(lambda f: os.path.join(working_dir, f),
+    #                      result_folders)
+    command = ['rm', '-r']
+    command.extend(result_folders)
+    print command
+    sp.call(command)
+
     print 'Starting tasks'
     for i in range(thread_total):
-        sp.call(['rm', '-r',
-                 os.path.join(working_dir, 'outputs%d' % i)])
+        # sp.call(['rm', '-r',
+        #          os.path.join(working_dir, 'outputs%d' % i)])
         sp.call(['mkdir', os.path.join(working_dir, 'outputs%d' % i)])
 
         start = i * img_per_task + 1
