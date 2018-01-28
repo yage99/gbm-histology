@@ -51,11 +51,12 @@ def main(dirname, outputname, task_pool=20):
 
             for id in local_all_data:
                 if id in all_data_matrix:
-                    all_data_matrix[id] = numpy.append(
-                        all_data_matrix[id],
-                        local_all_data[id],
-                        axis=0
-                    )
+                    print "warn: id gathered before, this may be fatal error"
+                    # all_data_matrix[id] = numpy.append(
+                    #     all_data_matrix[id],
+                    #     local_all_data[id],
+                    #     axis=0
+                    # )
                 else:
                     all_data_matrix[id] = local_all_data[id]
 
@@ -103,21 +104,24 @@ def main(dirname, outputname, task_pool=20):
                 printProgressBar(i, all,
                                  time_start=time_start,
                                  length=40)
-                matrix = all_data_matrix[id]
-                if(len(matrix) < 10):
-                    print("warn: %s not enough lines(%d)" % (id, len(matrix)))
-                    continue
+                # matrix = all_data_matrix[id]
+                # if(len(matrix) < 10):
+                #     print("warn: %s not enough lines(%d)"
+                #           % (id, len(matrix)))
+                #     continue
 
-                numpy_matrix = matrix
-                # numpy.array(matrix).astype(numpy.float)
-                mean = []
-                std = []
-                for column_idx in range(numpy_matrix.shape[1]):
-                    column = numpy_matrix[:, column_idx]
-                    column = column[~numpy.isnan(column)]
-                    mean.append(numpy.mean(column))
-                    std.append(numpy.std(column))
+                # numpy_matrix = matrix
+                # # numpy.array(matrix).astype(numpy.float)
+                # mean = []
+                # std = []
+                # # iterate each column to remove nan value of each column
+                # for column_idx in range(numpy_matrix.shape[1]):
+                #     column = numpy_matrix[:, column_idx]
+                #     column = column[~numpy.isnan(column)]
+                #     mean.append(numpy.mean(column))
+                #     std.append(numpy.std(column))
 
+                mean, std = all_data_matrix[id]
                 # append std to the end of means
                 mean.extend(std)
                 mean.insert(0, id)
@@ -144,6 +148,8 @@ def file_processor(filename):
     title = title[8:]
     local_all_data['title'] = title
 
+    last_id = ""
+    this_id_data = ""
     for line in reader:
 
         id = id_matcher.search(line[2]).group()
@@ -151,11 +157,13 @@ def file_processor(filename):
         numpy_line = numpy.array([line[8:]]).astype(numpy.float)
         # numpy_line[numpy.isnan(numpy_line)] = 0
 
-        if id in local_all_data:
-            local_all_data[id] = numpy.append(
-                local_all_data[id],
-                numpy_line,
-                axis=0)
+        if last_id == id:
+            # just append data if id not changed
+            this_id_data = numpy.append(this_id_data, numpy_line, axis=0)
+            # local_all_data[id] = numpy.append(
+            #     local_all_data[id],
+            #     numpy_line,
+            #     axis=0)
 
             # this will reduce memory use
             '''if all_data_matrix[row[0]].shape[0] == 10:
@@ -169,12 +177,32 @@ def file_processor(filename):
             '''
 
         else:
-            local_all_data[id] = numpy_line
+            mean_std = calc_mean_std(this_id_data)
+
+            this_id_data = numpy_line
+            last_id = id
+
+            local_all_data[id] = mean_std
 
         with thread_count.get_lock():
             thread_count.value += 1
 
     return local_all_data
+
+
+def calc_mean_std(numpy_matrix):
+    mean = []
+    std = []
+    # iterate each column to remove nan value of each column
+    for column_idx in range(numpy_matrix.shape[1]):
+        column = numpy_matrix[:, column_idx]
+        column = column[~numpy.isnan(column)]
+        if len(column) == 0:
+            print "warn: column length is 0, fill by 0"
+            column = [0]
+        mean.append(numpy.mean(column))
+        std.append(numpy.std(column))
+    return (mean, std)
 
 
 def recurse_find(dirname, results, contains):
