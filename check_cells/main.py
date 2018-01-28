@@ -34,7 +34,8 @@ def select_best_imgs(recalc_threshold=False):
     print 'copying images'
     retrive_best_images.main(selected_dir, best_dir,
                              overlay_dir=best_overlay_dir,
-                             thread_num=THREAD_NUM)
+                             thread_num=THREAD_NUM,
+                             num_to_retrive=20)
     to_remove = glob.glob('*.tiff')
     to_remove.insert(0, 'rm')
     sp.call(to_remove)
