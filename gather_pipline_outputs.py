@@ -65,7 +65,7 @@ def main(dirname, outputname, task_pool=20):
                 # print(matrix)
 
         for filename in cellfiles:
-            # file_process_callback(file_processor(filename))
+            # task_callback(file_processor(filename))
             pool.apply_async(file_processor, (filename, ),
                              callback=task_callback)
 
@@ -149,7 +149,7 @@ def file_processor(filename):
     local_all_data['title'] = title
 
     last_id = ""
-    this_id_data = ""
+    this_id_data = None
     for line in reader:
 
         id = id_matcher.search(line[2]).group()
@@ -177,12 +177,12 @@ def file_processor(filename):
             '''
 
         else:
-            mean_std = calc_mean_std(this_id_data)
+            if this_id_data is not None:
+                mean_std = calc_mean_std(this_id_data)
+                local_all_data[id] = mean_std
 
             this_id_data = numpy_line
             last_id = id
-
-            local_all_data[id] = mean_std
 
         with thread_count.get_lock():
             thread_count.value += 1

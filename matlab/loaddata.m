@@ -17,35 +17,38 @@ clinical = readtable('../source/clinical.csv');
 
 data_expression = readtable('../source/data_expression_Zscores.txt', ...
                             'TreatAsEmpty', 'NA');
-% TODO: change to zscore
+data_expression = rotate_table(data_expression);
+% TODO: change to zscore source data
 data_cna = readtable('../source/data_linear_CNA.txt', 'TreatAsEmpty', ...
                      'NA');
+data_cna = rotate_table(data_cna);
 data_mrna = readtable('../source/data_mRNA_median_Zscores.txt', ...
                       'TreatAsEmpty', {'NA'});
+data_mrna = rotate_table(data_mrna);
 
 keeps = true(height(clinical), 1);
-[keeps] = delnan(histology_cell, keeps);
-[keeps] = delnan(histology_cytoplasm, keeps);
-[keeps] = delnan(histology_nulei, keeps);
-[keeps] = delnan(data_expression, keeps);
-[keeps] = delnan(data_cna, keeps);
-[keeps] = delnan(data_mrna, keeps);
+[keeps, histology_cell] = delnan(histology_cell, keeps, clinical);
+[keeps, histology_cytoplasm] = delnan(histology_cytoplasm, keeps, clinical);
+[keeps, histology_nulei] = delnan(histology_nulei, keeps, clinical);
+[keeps, data_expression] = delnan(data_expression, keeps, clinical);
+[keeps, data_cna] = delnan(data_cna, keeps, clinical);
+[keeps, data_mrna] = delnan(data_mrna, keeps, clinical);
+clinical(~keeps, :) = [];
+histology_cell(~keeps, :) = [];
+histology_cytoplasm(~keeps, :) = [];
+histology_nulei(~keeps, :) = [];
+data_expression(~keeps, :) = [];
+data_cna(~keeps, :) = [];
+data_mrna(~keeps, :) = [];
 
-histology_cell = histology_cell(keeps, :);
-histology_cell{:,2:end} = normalizemeanstd(histology_cell{:,2:end});
-histology_cytoplasm = histology_cytoplasm(keeps, :);
-histology_cytoplasm{:,2:end} = ...
-    normalizemeanstd(histology_cytoplasm{:,2:end});
-histology_nulei = histology_nulei(keeps, :);
-histology_nulei{:,2:end} = ...
-    normalizemeanstd(histology_nulei{:,2:end});
-clinical = clinical(keeps, :);
-data_expression = data_expression(keeps, :);
-data_expression{:,2:end} = ...
-    normalizemeanstd(data_expression{:,2:end});
-data_cna = data_cna(keeps, :);
-data_cna{:,2:end} = normalizemeanstd(data_cna{:,2:end});
-data_mrna = data_mrna(keeps, :);
-data_mrna{:,2:end} = normalizemeanstd(data_mrna{:, 2:end});
+histology_cell = normalizemeanstd(histology_cell);
+histology_cytoplasm = ...
+    normalizemeanstd(histology_cytoplasm);
+histology_nulei = ...
+    normalizemeanstd(histology_nulei);
+data_expression = ...
+    normalizemeanstd(data_expression);
+data_cna = normalizemeanstd(data_cna);
+data_mrna = normalizemeanstd(data_mrna);
 
 end

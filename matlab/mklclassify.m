@@ -5,7 +5,7 @@ function [result, weights] = mklclassify(xapp, yapp, xtest, ytest, ...
 %
 %
 %ratio=0.75;
-%C = [300];
+C = 300;
 verbose=0;
 
 options.algo='svmclass';

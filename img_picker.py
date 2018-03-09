@@ -36,27 +36,27 @@ def calc_density(image_file, threshold=150):
 task_count = 0
 task_sum = 0
 id_matcher = re.compile("TCGA-\w{2}-\w{4}-\w{3}-\w{2}-\w{3}")
-REMOVE_BLANK_FILES = 2
+REMOVE_BLANK_FILES = 0
 
 
-def calc_task(folder, image_file):
+def calc_task(folder, image_file, blank_dir):
     global REMOVE_BLANK_FILES
 
     density = calc_density(os.path.join(folder, image_file))
 
     # blank files
-    if(REMOVE_BLANK_FILES != 1 and density < 0.05):
-        if REMOVE_BLANK_FILES == 2:
-            key = raw_input('delete blank files(y/N)? ')
-            if key != 'y':
-                REMOVE_BLANK_FILES = 1
-            else:
-                REMOVE_BLANK_FILES = 0
+    # if(REMOVE_BLANK_FILES != 1 and density < 0.05):
+    #     if REMOVE_BLANK_FILES == 2:
+    #         key = raw_input('delete blank files(y/N)? ')
+    #         if key != 'y':
+    #             REMOVE_BLANK_FILES = 1
+    #         else:
+    #             REMOVE_BLANK_FILES = 0
 
-        if REMOVE_BLANK_FILES == 0:
-            sp.call(['mv', os.path.join(folder, image_file),
-                     'data/svs-processed-blanks'])
-            return None
+    if REMOVE_BLANK_FILES == 0 and density < 0.05:
+        sp.call(['mv', os.path.join(folder, image_file),
+                 blank_dir])
+        return None
 
     return (folder, image_file, density)
 
@@ -90,8 +90,12 @@ patients = {}
 start_time = 0
 
 
-def main(folder, target_folder, task_pool=20,
-         tmpfilename="image_metas.pkl"):
+def main(working_dir, task_pool=20):
+    tmpfilename = os.path.join(working_dir, 'image_metas.pkl')
+    source_dir = os.path.join(working_dir, 'svs-processed')
+    target_dir = os.path.join(working_dir, 'svs-selected')
+    blank_dir = os.path.join(working_dir, 'svs-processed-blanks')
+
     print("data file name: %s" % tmpfilename)
     if not os.path.isfile(tmpfilename):
         print "image density not exists, calculating"
@@ -99,18 +103,21 @@ def main(folder, target_folder, task_pool=20,
 
         patients = {}
 
-        task_sum = len(os.listdir(folder))
+        sp.call(['rm', '-r', blank_dir])
+        sp.call(['mkdir', '-p', blank_dir])
+
+        task_sum = len(os.listdir(source_dir))
 
         task_count = 0
         pool = Pool(task_pool)
         # i = 0
         start_time = time.time()
-        for image_file in os.listdir(folder):
+        for image_file in os.listdir(source_dir):
             # i = i + 1
             # if i==10:
             #    break
             # calc_task(folder, image_file)
-            pool.apply_async(calc_task, (folder, image_file, ),
+            pool.apply_async(calc_task, (source_dir, image_file, blank_dir, ),
                              callback=task_callback)
         pool.close()
         pool.join()
@@ -127,25 +134,25 @@ def main(folder, target_folder, task_pool=20,
         print "using existing density file: %s" % tmpfilename
         patients = pickle.load(open(tmpfilename, "rb"))
 
-    print 'clean target folder %s' % os.path.join(target_folder, '*')
-    sp.call(['rm', '-r', target_folder])
-    sp.call(['mkdir', target_folder])
+    print 'clean target folder %s' % os.path.join(target_dir, '*')
+    sp.call(['rm', '-r', target_dir])
+    sp.call(['mkdir', '-p', target_dir])
     print "start copy file"
 
     copy_all_count = len(patients) * 40
     copy_count = 0
     time_start = time.time()
     for id in patients:
-        if not os.path.exists(os.path.join(target_folder, id)):
-            os.mkdir(os.path.join(target_folder, id))
+        if not os.path.exists(os.path.join(target_dir, id)):
+            os.mkdir(os.path.join(target_dir, id))
         count = 0
         for key, value in sorted(patients[id].iteritems(),
                                  key=lambda (k, v): (v, k),
                                  reverse=True):
-            if os.path.exists(os.path.join(folder, key)):
+            if os.path.exists(os.path.join(source_dir, key)):
                 sp.call(['ln', '-s',
-                         os.path.abspath(os.path.join(folder, key)),
-                         os.path.join(target_folder, id, key)])
+                         os.path.abspath(os.path.join(source_dir, key)),
+                         os.path.join(target_dir, id, key)])
                 # shutil.copyfile(os.path.join(folder, key),
                 #                 os.path.join(target_folder, id, key))
                 count += 1
@@ -159,12 +166,7 @@ def main(folder, target_folder, task_pool=20,
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 3:
-        main(sys.argv[1], sys.argv[2], tmpfilename=sys.argv[3])
-    elif len(sys.argv) > 1:
-        main("data/svs-processed",
-             "data/svs-selected",
-             tmpfilename=sys.argv[1])
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
     else:
-        main("data/svs-processed",
-             "data/svs-selected")
+        main('.')
