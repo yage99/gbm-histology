@@ -33,6 +33,7 @@ def run_pipeline(folder, working_dir='.', filelist_name='filelist',
 
     with open(os.path.join(working_dir, filelist_name),
               'w') as filelist_file:
+        filelist.sort()
         for item in filelist:
             filelist_file.write(item + "\n")
 

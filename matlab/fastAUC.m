@@ -1,4 +1,4 @@
-function [auc,fpr,tpr] = fastAUC(labels,scores,plot_flag, name)
+function [auc,fpr,tpr] = fastAUC(labels,scores,plot_flag, name, showfig)
 % function [auc,fpr,tpr] = myauc(labels,scores,plot_flag)
 %
 % This function calculates m AUC values for m ranked lists.
@@ -19,6 +19,9 @@ function [auc,fpr,tpr] = fastAUC(labels,scores,plot_flag, name)
 
 if ~exist('plot_flag','var')
     plot_flag = 0;
+end
+if ~exist('showfig', 'var')
+    showfig = 1;
 end
 if ~islogical(labels)
     error('labels input should be logical');
@@ -51,12 +54,19 @@ tpr = bsxfun(@rdivide,tp,num_pos); %True Positive Rate
 auc = sum(tpr.*[(diff(fp)==1); zeros(1,m)])./num_neg;
 %Plot the ROC curve
 if plot_flag==1
-    h=figure;
+    if showfig == 1
+        h = figure;
+    else
+        h = figure('visible', 'off');
+    end
     plot(fpr,tpr);
     xlabel('False Positive');
     ylabel('True Positive');
     legend(num2str(auc));
-    saveas(h, strcat(name, '_', num2str(auc), '.fig'));
+    if showfig ~= 1
+        %print -djpeg strcat(name, '-', num2str(auc), '.jpg')
+        saveas(h, strcat(name, '_', num2str(auc), '.png'));
+    end
     %close(h);
 end
 

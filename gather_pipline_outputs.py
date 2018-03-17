@@ -25,9 +25,12 @@ id_matcher = re.compile("TCGA-\w{2}-\w{4}")
 
 def main(dirname, outputname, task_pool=20):
 
-    for gathername, sourcename in [("cell.csv", "MyExpt_cell.csv"),
-                                   ("cytoplasm.csv", "MyExpt_Cytoplasm.csv"),
-                                   ("nulei.csv", "MyExpt_nulei.csv")]:
+    for gathername, sourcename in [("cell.csv",
+                                    ["MyExpt_cell.csv", "MyExpt_Cells.csv"]),
+                                   ("cytoplasm.csv", ["MyExpt_Cytoplasm.csv"]),
+                                   ("nulei.csv",
+                                    ["MyExpt_nulei.csv",
+                                     "MyExpt_Nuclei.csv"])]:
 
         print("processing %s files" % sourcename)
         cellfiles = []
@@ -155,7 +158,6 @@ def file_processor(filename):
         id = id_matcher.search(line[2]).group()
 
         numpy_line = numpy.array([line[8:]]).astype(numpy.float)
-        # numpy_line[numpy.isnan(numpy_line)] = 0
 
         if last_id == id:
             # just append data if id not changed
@@ -209,9 +211,14 @@ def recurse_find(dirname, results, contains):
     if os.path.isdir(dirname):
         for subdir in os.listdir(dirname):
             recurse_find(os.path.join(dirname, subdir), results, contains)
-
     else:
-        if contains in dirname:
+        is_valid_file = False
+        for item in contains:
+            if (item.upper().lower()
+                    == os.path.basename(dirname).upper().lower()):
+                is_valid_file = True
+
+        if is_valid_file:
             results.append(dirname)
 
 
