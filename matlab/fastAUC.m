@@ -65,7 +65,7 @@ if plot_flag==1
     legend(num2str(auc));
     if showfig ~= 1
         %print -djpeg strcat(name, '-', num2str(auc), '.jpg')
-        saveas(h, strcat(name, '_', num2str(auc), '.png'));
+        saveas(h, strcat(name, '_', num2str(auc), '.pdf'));
     end
     %close(h);
 end

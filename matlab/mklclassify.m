@@ -89,8 +89,6 @@ end
 %end
 
 
-
-
 %classcode=[1 -1];
 [~,dim]=size(xapp);
 
@@ -118,7 +116,7 @@ end
                                              kerneloptionvect, ...
                                              variableveccell);
 
-K = mklkernel(xapp,InfoKernel,Weight,options);
+K = mklkernel(xapp, InfoKernel, Weight, options);
 
 
 
@@ -134,15 +132,15 @@ K = mklkernel(xapp,InfoKernel,Weight,options);
 %
 % K = build_efficientK(K);
 
-tic
-[beta,w,b,posw,~,~] = mklsvm(K,yapp,C,options, verbose);
-toc
+% tic
+[beta, w, b, posw,~,~] = mklsvm(K, yapp, C, options, verbose);
+% toc
 
-Kt=mklkernel(xtest,InfoKernel,Weight, options,xapp(posw,:),beta);
-weights = Weight;
+Kt = mklkernel(xtest,InfoKernel, Weight, options, xapp(posw,:), beta);
+weights = beta;
 ypred=Kt*w+b;
 
-mean(sign(ypred)==ytest)
+% mean(sign(ypred)==ytest)
 
 result = ypred;
 

@@ -6,13 +6,13 @@ import os
 import subprocess32 as sp
 
 
-def select_best_imgs(recalc_threshold=False):
+def select_best_imgs(working_dir='../data/20x', recalc_threshold=False):
     # in my machine, 30 threads use too much memory
     THREAD_NUM = 25
 
-    selected_dir = '../data/svs-selected'
-    best_dir = '../data/svs-best-new'
-    best_overlay_dir = '../data/svs-best-overlay'
+    selected_dir = os.path.join(working_dir, 'svs-selected')
+    best_dir = os.path.join(working_dir, 'svs-best-new')
+    best_overlay_dir = os.path.join(working_dir, 'svs-best-overlay')
     print 'counting cell numbers'
     run.main(selected_dir, recalc_threshold=recalc_threshold,
              thread_num=THREAD_NUM)
@@ -44,6 +44,6 @@ def select_best_imgs(recalc_threshold=False):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         if sys.argv[1] == 't':
-            select_best_imgs(True)
+            select_best_imgs(recalc_threshold=True)
     else:
         select_best_imgs()

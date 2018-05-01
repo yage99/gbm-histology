@@ -124,8 +124,11 @@ def main(dirname, outputname, task_pool=20):
                 #     mean.append(numpy.mean(column))
                 #     std.append(numpy.std(column))
 
-                mean, std = all_data_matrix[id]
+                mean, max, min, median, std = all_data_matrix[id]
                 # append std to the end of means
+                mean.extend(max)
+                mean.extend(min)
+                mean.extend(median)
                 mean.extend(std)
                 mean.insert(0, id)
                 writer.writerow(mean)
@@ -194,6 +197,9 @@ def file_processor(filename):
 
 def calc_mean_std(numpy_matrix):
     mean = []
+    max = []
+    min = []
+    median = []
     std = []
     # iterate each column to remove nan value of each column
     for column_idx in range(numpy_matrix.shape[1]):
@@ -203,8 +209,11 @@ def calc_mean_std(numpy_matrix):
             print "warn: column length is 0, fill by 0"
             column = [0]
         mean.append(numpy.mean(column))
+        max.append(numpy.max(column))
+        min.append(numpy.min(column))
+        median.append(numpy.median(column))
         std.append(numpy.std(column))
-    return (mean, std)
+    return (mean, max, min, median, std)
 
 
 def recurse_find(dirname, results, contains):

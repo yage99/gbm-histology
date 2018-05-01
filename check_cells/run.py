@@ -15,7 +15,7 @@ thread_count = Value('d', 0)
 task_count = Value('d', 0)
 
 
-RECALC_THRESHOLD_FLAG = False
+RECALC_THRESHOLD_FLAG = True
 threshold_reg = re.compile(r'(threshold_.*)*.png$')
 
 
