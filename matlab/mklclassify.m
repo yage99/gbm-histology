@@ -1,14 +1,16 @@
 function [result, weights] = mklclassify(xapp, yapp, xtest, ytest, ...
                                          C, kernel, kerneloptionvect, ...
-                                         variablevec)
+                                         variablevec, penalty)
 % Example of how to use the mklsvm for  classification
 %
 %
 %ratio=0.75;
-C = 300;
+%C = 300;
 verbose=0;
 
 options.algo='svmclass';
+
+options.penalty = penalty;
 % Choice of algorithm in mklsvm can be
 % either
 % 'svmclass' or 'svmreg'

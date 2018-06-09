@@ -1,6 +1,6 @@
 function [histology_cell, histology_cytoplasm, histology_nulei,...
-          clinical, data_expression, data_cna, data_mrna] = ...
-        loaddata(source)
+          clinical, data_expression, data_cna, data_mrna, data_meth] = ...
+        loaddata(source, include_meth)
 
 histology_cell = readtable('../source/cell.csv', 'TreatAsEmpty', ...
                            'NA');
@@ -28,6 +28,11 @@ data_mrna = source.data_mrna;
 % data_mrna = readtable('../source/data_mRNA_median_Zscores.txt', ...
 %                       'TreatAsEmpty', {'NA'});
 % data_mrna = rotate_table(data_mrna);
+if include_meth
+    data_meth = source.data_meth;
+else
+    data_meth = [];
+end
 
 keeps = true(height(clinical), 1);
 [keeps, histology_cell] = delnan(histology_cell, keeps, clinical);
@@ -36,6 +41,10 @@ keeps = true(height(clinical), 1);
 [keeps, data_expression] = delnan(data_expression, keeps, clinical);
 [keeps, data_cna] = delnan(data_cna, keeps, clinical);
 [keeps, data_mrna] = delnan(data_mrna, keeps, clinical);
+if include_meth
+    [keeps, data_meth] = delnan(data_meth, keeps, clinical);
+end
+
 clinical(~keeps, :) = [];
 histology_cell(~keeps, :) = [];
 histology_cytoplasm(~keeps, :) = [];
@@ -43,6 +52,9 @@ histology_nulei(~keeps, :) = [];
 data_expression(~keeps, :) = [];
 data_cna(~keeps, :) = [];
 data_mrna(~keeps, :) = [];
+if include_meth
+    data_meth(~keeps, :) = [];
+end
 
 histology_cell = normalizemeanstd(histology_cell);
 histology_cytoplasm = ...
@@ -53,5 +65,8 @@ data_expression = ...
     normalizemeanstd(data_expression);
 data_cna = normalizemeanstd(data_cna);
 data_mrna = normalizemeanstd(data_mrna);
+if include_meth
+    data_meth = normalizemeanstd(data_meth);
+end
 
 end
