@@ -94,7 +94,11 @@ def main(dirname, outputname, task_pool=20):
             mean_title = map(lambda x: "mean_" + x, title)
             std_title = map(lambda x: "std_" + x, title)
             title = mean_title
+            title.extend(map(lambda x: "max_" + x, title))
+            title.extend(map(lambda x: "min_" + x, title))
+            title.extend(map(lambda x: "median_" + x, title))
             title.extend(std_title)
+
             title.insert(0, 'id')
             writer.writerow(title)
             del all_data_matrix['title']

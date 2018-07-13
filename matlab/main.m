@@ -39,7 +39,7 @@ histology_data(histology_data > 2) = 0;
 histology_data(histology_data < -2) = 0;
 histology_feature_indc = mrmr_miq_d(histology_data, class, 50);
 histology_data = histology_data(:, histology_feature_indc);
-iteration = 5;
+iteration = 10;
 
 for k = 1:iteration
     kernel = {'gaussian' 'gaussian' 'gaussian' 'gaussian' 'gaussian' ...
@@ -93,17 +93,17 @@ for k = 1:iteration
     %experiment.tcga = fastAUC(class == 1, result, 1, 'tcga', 0);
     
     %% histology feature
-    %result = cross_valid(histology_data, class, indcs, kernel, kerneloptionvect, experiment.kernel2, 0);
-    %experiment.histology = fastAUC(class == 1, result, 1, 'histology', 0);
+    result = cross_valid(histology_data, class, indcs, kernel, kerneloptionvect, experiment.kernel2, 5000);
+    experiment.histology = fastAUC(class == 1, result, 1, 'histology', 0);
     
     %% combined feature
-    for cellidx = 1:length(variableveccell2)
-        variableveccell2{cellidx} = experiment.kernel2{cellidx} + size(tcga_data, 2);
-    end
-    variableveccell = [experiment.kernel1 variableveccell2];
-    result = cross_valid([tcga_data, histology_data], class, indcs, kernel, ...
-            kerneloptionvect, variableveccell, 50000);
-    experiment.combined = fastAUC(class == 1, result, 1, 'combined', 0);
+    %for cellidx = 1:length(variableveccell2)
+    %    variableveccell2{cellidx} = experiment.kernel2{cellidx} + size(tcga_data, 2);
+    %end
+    %variableveccell = [experiment.kernel1 variableveccell2];
+    %result = cross_valid([tcga_data, histology_data], class, indcs, kernel, ...
+    %        kerneloptionvect, variableveccell, 50000);
+    %experiment.combined = fastAUC(class == 1, result, 1, 'combined', 0);
     
     k
     experiment

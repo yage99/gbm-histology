@@ -17,7 +17,7 @@ options.penalty = penalty;
 %------------------------------------------------------
 % choosing the stopping criterion
 %------------------------------------------------------
-options.stopvariation=0; % use variation of weights for stopping
+options.stopvariation=1; % use variation of weights for stopping
                          % criterion
 options.stopKKT=0;       % set to 1 if you use KKTcondition for
                          % stopping criterion
@@ -27,7 +27,7 @@ options.stopdualitygap=1; % set to 1 for using duality gap for
 %------------------------------------------------------
 % choosing the stopping criterion value
 %------------------------------------------------------
-options.seuildiffsigma=1e-2;        % stopping criterion for weight
+options.seuildiffsigma=1e-5;        % stopping criterion for weight
                                     % variation
 options.seuildiffconstraint=0.1;    % stopping criterion for KKT
 options.seuildualitygap=0.0005;       % stopping criterion for
