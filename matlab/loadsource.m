@@ -14,6 +14,11 @@ data_mrna = rotate_table(data_mrna);
 data_meth= readtable('../source/data_methylation_hm27.txt', ...
                       'TreatAsEmpty', {'NA'});
 data_meth = rotate_table(data_meth);
+data_meth1= readtable('../source/data_methylation_hm450.txt', ...
+                      'TreatAsEmpty', {'NA'});
+data_meth1 = rotate_table(data_meth1);
+data_meth = [data_meth1;data_meth];
+data_meth = removedump(data_meth);
 
 source.clinical = clinical;
 source.data_expression = data_expression;
