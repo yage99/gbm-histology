@@ -24,8 +24,8 @@ if ~exist('data_expression', 'var')
     indcs(sort_indc) = indcs;
 end
 
-tcga_data = [data_expression, data_cna, ...
-             data_mrna, data_meth];
+tcga_data = [data_expression{:, 2:end}, data_cna{:, 2:end}, ...
+             data_mrna{:, 2:end}, data_meth{:, 2:end}];
 tcga_data(tcga_data > 2) = 0;
 tcga_data(tcga_data < -2) = 0;
 class = source_class;
@@ -34,7 +34,7 @@ tcga_data = tcga_data(:, tcga_feature_indc);
 
 overall_result = struct('combined', {}, 'tcga', {}, 'histology', {},...
                         'kernel1', {}, 'kernel2', {});
-histology_data = [histology_cell, histology_cytoplasm, histology_nulei];
+histology_data = [histology_cell{:, 2:end}, histology_cytoplasm{:, 2:end}, histology_nulei{:, 2:end}];
 histology_data(histology_data > 2) = 0;
 histology_data(histology_data < -2) = 0;
 histology_feature_indc = mrmr_miq_d(histology_data, class, 50);

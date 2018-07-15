@@ -1,16 +1,16 @@
-function [histology_cell, histology_cytoplasm, histology_nulei,...
+function [histology_cell, histology_cytoplasm, histology_nuclei,...
           clinical, data_expression, data_cna, data_mrna, data_meth] = ...
         loaddata(source, include_meth)
 
-histology_cell = readtable('../source/cell.csv', 'TreatAsEmpty', ...
-                           'NA');
+histology_cell = source.histology_cell; %readtable('../source/cell.csv', 'TreatAsEmpty', ...
+                           %'NA');
 % histology_cell{:, 2:end} = str2double(histology_cell{:, 2:end});
-histology_cytoplasm = readtable('../source/cytoplasm.csv', ...
-                                'TreatAsEmpty', 'NA');
+histology_cytoplasm = source.histology_cytoplasm; %readtable('../source/cytoplasm.csv', ...
+                                %'TreatAsEmpty', 'NA');
 % histology_cytoplasm{:, 2:end} = str2double(histology_cytoplasm{:, ...
 %                    2:end});
-histology_nulei = readtable('../source/nulei.csv', 'TreatAsEmpty', ...
-                            'NA');
+histology_nuclei = source.histology_nuclei;%readtable('../source/nulei.csv', 'TreatAsEmpty', ...
+                            %'NA');
 %histology_nulei{:, 2:end} = str2double(histology_nulei{:, 2:end});
 
 clinical = source.clinical;%readtable('../source/clinical.csv');
@@ -31,42 +31,46 @@ data_mrna = source.data_mrna;
 if include_meth
     data_meth = source.data_meth;
 else
-    data_meth = [];
+    data_meth = source.data_meth{:, 1};
 end
 
-keeps = true(height(clinical), 1);
-[keeps, histology_cell] = delnan(histology_cell, keeps, clinical);
-[keeps, histology_cytoplasm] = delnan(histology_cytoplasm, keeps, clinical);
-[keeps, histology_nulei] = delnan(histology_nulei, keeps, clinical);
-[keeps, data_expression] = delnan(data_expression, keeps, clinical);
-[keeps, data_cna] = delnan(data_cna, keeps, clinical);
-[keeps, data_mrna] = delnan(data_mrna, keeps, clinical);
+%keeps = true(height(clinical), 1);
+[~, ~, patients] = match(histology_cell{:,1}, clinical{:,1});
+[~, ~, patients] = match(data_expression{:,1}, patients);
+[~, ~, patients] = match(data_cna{:,1}, patients);
+[~, ~, patients] = match(data_mrna{:, 1}, patients);
 if include_meth
-    [keeps, data_meth] = delnan(data_meth, keeps, clinical);
+    [~, ~, patients] = match(data_meth{:, 1}, patients);
 end
 
-clinical(~keeps, :) = [];
-histology_cell(~keeps, :) = [];
-histology_cytoplasm(~keeps, :) = [];
-histology_nulei(~keeps, :) = [];
-data_expression(~keeps, :) = [];
-data_cna(~keeps, :) = [];
-data_mrna(~keeps, :) = [];
+indc = match(clinical{:, 1}, patients);
+clinical = clinical(indc, :);
+indc = match(histology_cell{:, 1}, patients);
+histology_cell = histology_cell(indc, :);
+histology_cytoplasm = histology_cytoplasm(indc, :);
+histology_nuclei = histology_nuclei(indc, :);
+indc = match(data_expression{:, 1}, patients);
+data_expression = data_expression(indc, :);
+indc = match(data_cna{:, 1}, patients);
+data_cna = data_cna(indc, :);
+indc = match(data_mrna{:, 1}, patients);
+data_mrna = data_mrna(indc, :);
 if include_meth
-    data_meth(~keeps, :) = [];
+    indc = match(data_meth{:, 1}, patients);
+    data_meth = data_meth(indc, :);
 end
 
-histology_cell = normalizemeanstd(histology_cell);
-histology_cytoplasm = ...
-    normalizemeanstd(histology_cytoplasm);
-histology_nulei = ...
-    normalizemeanstd(histology_nulei);
-data_expression = ...
-    normalizemeanstd(data_expression);
-data_cna = normalizemeanstd(data_cna);
-data_mrna = normalizemeanstd(data_mrna);
+histology_cell{:,2:end} = normalizemeanstd(histology_cell{:,2:end});
+histology_cytoplasm{:,2:end} = ...
+    normalizemeanstd(histology_cytoplasm{:,2:end});
+histology_nuclei{:,2:end} = ...
+    normalizemeanstd(histology_nuclei{:,2:end});
+data_expression{:,2:end} = ...
+    normalizemeanstd(data_expression{:,2:end});
+data_cna{:,2:end} = normalizemeanstd(data_cna{:,2:end});
+data_mrna{:,2:end} = normalizemeanstd(data_mrna{:,2:end});
 if include_meth
-    data_meth = normalizemeanstd(data_meth);
+    data_meth{:,2:end} = normalizemeanstd(data_meth{:,2:end});
 end
 
 end
