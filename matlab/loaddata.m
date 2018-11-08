@@ -43,20 +43,22 @@ if include_meth
     [~, ~, patients] = match(data_meth{:, 1}, patients);
 end
 
-indc = match(clinical{:, 1}, patients);
+patients = sort(patients);
+
+[~, indc] = match(patients, clinical{:, 1});
 clinical = clinical(indc, :);
-indc = match(histology_cell{:, 1}, patients);
+[~, indc] = match(patients, histology_cell{:, 1});
 histology_cell = histology_cell(indc, :);
 histology_cytoplasm = histology_cytoplasm(indc, :);
 histology_nuclei = histology_nuclei(indc, :);
-indc = match(data_expression{:, 1}, patients);
+[~, indc] = match(patients, data_expression{:, 1});
 data_expression = data_expression(indc, :);
-indc = match(data_cna{:, 1}, patients);
+[~, indc] = match(patients, data_cna{:, 1});
 data_cna = data_cna(indc, :);
-indc = match(data_mrna{:, 1}, patients);
+[~, indc] = match(patients, data_mrna{:, 1});
 data_mrna = data_mrna(indc, :);
 if include_meth
-    indc = match(data_meth{:, 1}, patients);
+    [~, indc] = match(patients, data_meth{:, 1});
     data_meth = data_meth(indc, :);
 end
 
