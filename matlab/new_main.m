@@ -26,8 +26,8 @@ if ~exist('data_expression', 'var')
 
 end
 
-tcga_data = [data_expression, data_cna, ...
-             data_mrna, data_meth];
+tcga_data = [data_expression{:, 2:end}, data_cna{:, 2:end}, ...
+    data_mrna{:, 2:end}];
 tcga_data(tcga_data > 2) = 0;
 tcga_data(tcga_data < -2) = 0;
 class = source_class;
@@ -37,7 +37,7 @@ tcga_data = tcga_data(:, tcga_feature_indc);
 overall_result = struct('combined', {}, 'tcga', {}, 'histology', {},...
                         'kernel1', {}, 'kernel2', {});
 
-histology_data = [histology_cell, histology_cytoplasm, histology_nulei];
+histology_data = [histology_cell{:, 2:end}, histology_cytoplasm{:, 2:end}, histology_nulei{:, 2:end}];
 histology_data(histology_data > 2) = 0;
 histology_data(histology_data < -2) = 0;
 
@@ -86,7 +86,7 @@ parfor i=1:10
     [rowDist{i}, ~] = ...
         mklclassify(data(indcs~=i,:), class(indcs~=i), ...
                     data(indcs==i,:), class(indcs==i), 300,...
-                    kernel, kerneloptionvect, experiment.kernel1); %#ok
+                    kernel, kerneloptionvect, experiment.kernel1, 0); %#ok
 end
 result = cell2mat(rowDist);
 result(pos) = result;
@@ -99,7 +99,7 @@ parfor i=1:10
     [rowDist{i}, ~] = ...
         mklclassify(data(indcs~=i,:), class(indcs~=i), ...
                     data(indcs==i,:), class(indcs==i), 300,...
-                    kernel, kerneloptionvect, experiment.kernel2); %#ok
+                    kernel, kerneloptionvect, experiment.kernel2, 0); %#ok
 end
 result = cell2mat(rowDist);
 result(pos) = result;
@@ -117,7 +117,7 @@ parfor i=1:10
     [rowDist{i}, weight] = ...
         mklclassify(data(indcs~=i, :), class(indcs~=i), ...
                     data(indcs==i, :), class(indcs==i), 300,...
-                    kernel, kerneloptionvect, variableveccell); %#ok
+                    kernel, kerneloptionvect, variableveccell, 0); %#ok
     % reshape(weight, length(weight) / length(params), length(params))
 end
 result = cell2mat(rowDist);
