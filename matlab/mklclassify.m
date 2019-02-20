@@ -136,6 +136,7 @@ K = mklkernel(xapp, InfoKernel, Weight, options);
 
 % tic
 [beta, w, b, posw,~,~] = mklsvm(K, yapp, C, options, verbose);
+beta = 1/length(beta);
 % toc
 
 Kt = mklkernel(xtest,InfoKernel, Weight, options, xapp(posw,:), beta);

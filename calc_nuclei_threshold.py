@@ -3,6 +3,18 @@ from skimage import io, color
 import numpy as np
 
 
+def read_hae_file(image_file):
+    rgba = io.imread(image_file)
+    rgb = color.rgba2rgb(rgba)
+    he = unmix_color(rgb, CHOICE_HEMATOXYLIN)
+    es = unmix_color(rgb, CHOICE_EOSIN)
+
+    result = np.zeros([he.shape[0], he.shape[1], 2])
+    result[:, :, 0] = he
+    result[:, :, 1] = es
+    return result
+
+
 def calc_nuclei_threshold(image_file, threshold=150):
     rgba = io.imread(image_file)
     rgb = color.rgba2rgb(rgba)
@@ -51,9 +63,9 @@ FIXED_SETTING_COUNT = 2
 VARIABLE_SETTING_COUNT = 5
 
 
-def unmix_color(input_pixels):
+def unmix_color(input_pixels, stein):
     '''Produce one image - storing it in the image set'''
-    inverse_absorbances = get_inverse_absorbances(CHOICE_HEMATOXYLIN)
+    inverse_absorbances = get_inverse_absorbances(stein)
     #########################################
     #
     # Renormalize to control for the other stains

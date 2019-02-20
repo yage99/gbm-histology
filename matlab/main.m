@@ -22,10 +22,15 @@ if ~exist('data_expression', 'var')
 
     indcs = [negative_indc; positive_indc];% crossvalind('Kfold', length(source_class), 10);
     indcs(sort_indc) = indcs;
+
+    max_improve = 0;
+    %indcs = crossvalind('Kfold', length(source_class), 10);
 end
 
 tcga_data = [data_expression{:, 2:end}, data_cna{:, 2:end}, ...
-             data_mrna{:, 2:end}, data_meth{:, 2:end}];
+             data_mrna{:, 2:end}];
+%tcga_data = [data_expression, data_cna, ...
+%             data_mrna];
 tcga_data(tcga_data > 2) = 0;
 tcga_data(tcga_data < -2) = 0;
 class = source_class;
@@ -33,8 +38,9 @@ tcga_feature_indc = mrmr_miq_d(tcga_data, class, 290);
 tcga_data = tcga_data(:, tcga_feature_indc);
 
 overall_result = struct('combined', {}, 'tcga', {}, 'histology', {},...
-                        'kernel1', {}, 'kernel2', {});
+                        'kernel1', {}, 'kernel2', {}, 'result', {});
 histology_data = [histology_cell{:, 2:end}, histology_cytoplasm{:, 2:end}, histology_nulei{:, 2:end}];
+%histology_data = [histology_cell, histology_cytoplasm, histology_nulei];
 histology_data(histology_data > 2) = 0;
 histology_data(histology_data < -2) = 0;
 histology_feature_indc = mrmr_miq_d(histology_data, class, 50);
@@ -47,6 +53,7 @@ for k = 1:iteration
     %kernel = {'gaussian' 'gaussian' 'gaussian'};
 
     params = [0.001 0.002 0.005 0.01 0.05 0.1 0.25 0.5 1 2 5 7 10 12 15 17 20]; %2^-10:10;
+    %params = [0.1 0.25 0.5 1 2 5 7 10]; %2^-10:10;
     kerneloptionvect = {params params params params params params params ...
                         params params params};
     variablevec={'random' 'random' 'random' 'random' 'random' 'random' ...
@@ -89,21 +96,22 @@ for k = 1:iteration
     % result(pos) = result;
     % 
 
-    %result = cross_valid(tcga_data, class, indcs, kernel, kerneloptionvect, experiment.kernel1, 0);
-    %experiment.tcga = fastAUC(class == 1, result, 1, 'tcga', 0);
+    result = cross_valid(tcga_data, class, indcs, kernel, kerneloptionvect, experiment.kernel1, 0);
+    experiment.tcga = fastAUC(class == 1, result, 1, 'tcga', 0);
     
     %% histology feature
-    result = cross_valid(histology_data, class, indcs, kernel, kerneloptionvect, experiment.kernel2, 5000);
+    result = cross_valid(histology_data, class, indcs, kernel, kerneloptionvect, experiment.kernel2, 0);
     experiment.histology = fastAUC(class == 1, result, 1, 'histology', 0);
     acan_concordance_index(
     %% combined feature
-    %for cellidx = 1:length(variableveccell2)
-    %    variableveccell2{cellidx} = experiment.kernel2{cellidx} + size(tcga_data, 2);
-    %end
-    %variableveccell = [experiment.kernel1 variableveccell2];
-    %result = cross_valid([tcga_data, histology_data], class, indcs, kernel, ...
-    %        kerneloptionvect, variableveccell, 50000);
-    %experiment.combined = fastAUC(class == 1, result, 1, 'combined', 0);
+    for cellidx = 1:length(variableveccell2)
+        variableveccell2{cellidx} = experiment.kernel2{cellidx} + size(tcga_data, 2);
+    end
+    variableveccell = [experiment.kernel1 variableveccell2];
+    result = cross_valid([tcga_data, histology_data], class, indcs, kernel, ...
+            kerneloptionvect, variableveccell, 0);
+    experiment.combined = fastAUC(class == 1, result, 1, 'combined', 0);
+    experiment.result = result;
     
     k
     experiment

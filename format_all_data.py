@@ -32,7 +32,7 @@ def instance_unified(histology_file_list, cbioportal_file_list, clinical_file):
     for file in histology_file_list:
         histology_dict = {}
         reader = csv.reader(open(file, 'r'), delimiter=',')
-        
+
         writer = csv.writer(open('source/' + os.path.basename(file), 'w'),
                             delimiter=',')
         header = reader.next()
