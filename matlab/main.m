@@ -95,7 +95,7 @@ for k = 1:iteration
     %% histology feature
     result = cross_valid(histology_data, class, indcs, kernel, kerneloptionvect, experiment.kernel2, 5000);
     experiment.histology = fastAUC(class == 1, result, 1, 'histology', 0);
-    
+    acan_concordance_index(
     %% combined feature
     %for cellidx = 1:length(variableveccell2)
     %    variableveccell2{cellidx} = experiment.kernel2{cellidx} + size(tcga_data, 2);
