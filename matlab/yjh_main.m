@@ -9,4 +9,4 @@ clinical = readtable('../source/clinical.csv');
 
 
 
-result_mrmr_20 = copy_number_main(data_cna, clinical, 20);
+result_mrmr_50 = copy_number_main(data_cna, clinical, 50);
