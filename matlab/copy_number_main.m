@@ -42,10 +42,10 @@ for k = 1:iteration
         CreateKernelListWithVariable(variablevec, size(data, 2),...
                                      kernel, kerneloptionvect);
                                  
-    result = cross_valid(data, source_class, indcs, kernel1, kerneloptionvect1, variableveccell1, 5000);
+    result = cross_valid(data, source_class, indcs, kernel1, kerneloptionvect1, variableveccell1, 0);
     results(k, 1) = fastAUC(source_class == 1, result, 0, 'histology', 0);
     results(k, 2) = acan_concordance_index(source_class, result);
-    k
+    k %#ok
     fprintf('auc %f\n', results(k, 1));
     fprintf('cindex %f\n', results(k, 2));
 
