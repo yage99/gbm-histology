@@ -23,7 +23,7 @@ The patches are stored in a specific directory in the form \<TCGAID\>\_pos.jpg.
 
 Process all patches by Cellprofiler, count cell number of all patches.
 Select top 20 (default, can be set) patches with the highest cell density.
-Resultes are stored in a specific directory.
+Results are stored in a specific directory.
 
 ## Records
 
@@ -34,3 +34,11 @@ run pipeline command:
 The cellprofiler project `tangbo.cpproj` has more features. Using a measurement
 generate by our script. Which could be easily change to the default method from
 cellprofiler.
+
+## Paper
+
+The paper has been published in JBHI titled "A Novel MKL Method for GBM Prognosis Prediction by Integrating Histopathological Image and Multi-omics Data"
+
+cite:
+
+Zhang, Ya, et al. "A Novel MKL Method for GBM Prognosis Prediction by Integrating Histopathological Image and Multi-omics Data." IEEE journal of biomedical and health informatics (2019).
