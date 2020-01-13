@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import img_picker
 from check_cells.main import select_best_imgs
 import run_pipeline
