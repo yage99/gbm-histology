@@ -14,5 +14,3 @@ data_cna_origin = rotate_table(data_cna_origin);
 clinical = readtable('../source/clinical.csv');
 
 [result_cna_mrmr_all, ~, feature_indc] = copy_number_main(data_cna, clinical, 0, 'mrmr');
-
-%data_cna_mrmr_30 = data_cna_origin(:, feature_indc);
